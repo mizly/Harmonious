@@ -1,17 +1,14 @@
 from detection import isMouseOverRect
+from graph import linear
 from com.jogamp.opengl import GLContext, GL3
-
-def credit(ENABLE_P2D,status,timer,locked): #Credit screen
+def level1(ENABLE_P2D,status,timer,locked): #Credit screen
     #Text
     push()
     background(200)
     fill(55)
     textSize(50)
     textAlign(LEFT)
-    text("Credits", displayWidth/6, displayHeight/6)
-    textSize(30)
-    text("Game and Music: Vu Cao\nHelp with animation: Feng-Xiang Ming",displayWidth/8, displayHeight/3)
-    text("Made with Processing.py", displayWidth/1.6, displayHeight/3)
+    text("Level 1", displayWidth/6, displayHeight/6)
     pop()
     
     #Invert effect
@@ -23,7 +20,7 @@ def credit(ENABLE_P2D,status,timer,locked): #Credit screen
     rect(displayWidth/4,displayHeight/2,displayWidth/2,displayHeight)
     pop()
     
-    #Back button
+        #Back button
     push()
     textSize(50)
     #rect(displayWidth/12,displayHeight/15,displayWidth/16,displayHeight/25) #hitbox for back button
@@ -40,7 +37,6 @@ def credit(ENABLE_P2D,status,timer,locked): #Credit screen
         if not mousePressed:
             locked = False
             if isMouseOverRect(displayWidth/12,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over back button
-                status = "intro"
-
-    return (status,timer,locked)
+                status = "start"
     
+    return (status,timer,locked)

@@ -1,6 +1,6 @@
-from detection import isMouseOverRect
-
-def options(status, volMaster,volMusic,volFX): #Credit screen
+from detection import isMouseOverRect, isMouseOverCircle
+from com.jogamp.opengl import GLContext, GL3
+def options(ENABLE_P2D,status, volMaster,volMusic,volFX, masterLocked, musicLocked,FXLocked,locked): #Options screen
     #Text
     push()
     background(200)
@@ -20,12 +20,12 @@ def options(status, volMaster,volMusic,volFX): #Credit screen
     text("Effects Volume",displayWidth*0.4,displayHeight*0.6)
     
     textAlign(LEFT)
-    text(volMaster,displayWidth*0.6,displayHeight*0.4)
-    text(volMusic,displayWidth*0.6,displayHeight*0.5)
-    text(volFX,displayWidth*0.6,displayHeight*0.6)
+    text(int(volMaster),displayWidth*0.6,displayHeight*0.4)
+    text(int(volMusic),displayWidth*0.6,displayHeight*0.5)
+    text(int(volFX),displayWidth*0.6,displayHeight*0.6)
     pop()
     
-    #Sliders
+    #Sliderbars
     push()
     noStroke()
     fill(55)
@@ -38,21 +38,76 @@ def options(status, volMaster,volMusic,volFX): #Credit screen
     push()
     fill(255)
     blendMode(DIFFERENCE)
-    #GLContext.getCurrentGL().getGL3().glBlendFunc(GL3.GL_ONE_MINUS_DST_COLOR, GL3.GL_ZERO)
+    if ENABLE_P2D:
+        GLContext.getCurrentGL().getGL3().glBlendFunc(GL3.GL_ONE_MINUS_DST_COLOR, GL3.GL_ZERO)
     rect(displayWidth/4,displayHeight/2,displayWidth/2,displayHeight)
+    pop()
+    
+    #Sliderballs
+    push()
+    noStroke()
+    
+    #Master
+    if isMouseOverCircle(displayWidth*0.425 + displayWidth*(0.15/100*volMaster), displayHeight*0.385,displayHeight*0.03): #detect if mouse is over circle
+        fill(150)
+        if(mousePressed) and not musicLocked and not FXLocked: #detect mouse press, and lock on (this is to prevent the cursor from moving "too fast" for the slider)
+            masterLocked = True
+    else:
+        fill(255)
+    if(not mousePressed): #unlock mouse
+        masterLocked = False
+    if masterLocked: #if slider is locked on execute slider movement
+        fill(150)
+        volMaster = min(100,max(0,(mouseX-displayWidth*0.425)/(displayWidth*0.15)*100)) #0.425 to #0.575 is from 0 to master volume. Passes through a min/max filter to make sure the value is between 0 and 100
+    circle(displayWidth*0.425 + displayWidth*(0.15/100*volMaster), displayHeight*0.385,displayHeight*0.03) #0.425 to #0.575 is from 0 to 100. The 0.15 is the percentage part in the first parameter
+    
+    #Music
+    if isMouseOverCircle(displayWidth*0.425 + displayWidth*(0.15/100*volMusic), displayHeight*0.485,displayHeight*0.03): #detect if mouse is over circle
+        fill(150)
+        if(mousePressed) and not masterLocked and not FXLocked: #detect mouse press, and lock on (this is to prevent the cursor from moving "too fast" for the slider)
+            musicLocked = True
+    else:
+        fill(255)
+    if(not mousePressed): #unlock mouse
+        musicLocked = False
+    if musicLocked: #if slider is locked on execute slider movement
+        fill(150)
+        volMusic = min(100,max(0,(mouseX-displayWidth*0.425)/(displayWidth*0.15)*100)) #0.425 to #0.575 is from 0 to master volume. Passes through a min/max filter to make sure the value is between 0 and 100
+    circle(displayWidth*0.425 + displayWidth*(0.15/100*volMusic), displayHeight*0.485,displayHeight*0.03) #0.425 to #0.575 is from 0 to 100. The 0.15 is the percentage part in the first parameter
+    
+    #Effects
+    if isMouseOverCircle(displayWidth*0.425 + displayWidth*(0.15/100*volFX), displayHeight*0.585,displayHeight*0.03): #detect if mouse is over circle
+        fill(150)
+        if(mousePressed) and not masterLocked and not musicLocked: #detect mouse press, and lock on (this is to prevent the cursor from moving "too fast" for the slider)
+            FXLocked = True
+    else:
+        fill(255)
+    if(not mousePressed): #unlock mouse
+        FXLocked = False
+    if FXLocked: #if slider is locked on execute slider movement
+        fill(150)
+        volFX = min(100,max(0,(mouseX-displayWidth*0.425)/(displayWidth*0.15)*100)) #0.425 to #0.575 is from 0 to master volume. Passes through a min/max filter to make sure the value is between 0 and 100
+    circle(displayWidth*0.425 + displayWidth*(0.15/100*volFX), displayHeight*0.585,displayHeight*0.03) #0.425 to #0.575 is from 0 to 100. The 0.15 is the percentage part in the first parameter
+    
     pop()
     
     #Back button
     push()
     textSize(50)
     #rect(displayWidth/12,displayHeight/15,displayWidth/16,displayHeight/25) #hitbox for back button
-    if isMouseOverRect(displayWidth/12,displayHeight/15,displayWidth/16,displayHeight/25):
-        if(mousePressed):
-            status = "intro"
+    if isMouseOverRect(displayWidth/12,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over back button
+        if mousePressed: #lock mouse
+            locked = True
         fill(255)
     else:
         fill(200)
     text("Back",displayWidth/12,displayHeight/12)
     pop()
     
-    return (status, volMaster,volMusic,volFX)
+    if locked: #unlock mouse
+        if not mousePressed:
+            locked = False
+            if isMouseOverRect(displayWidth/12,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over back button
+                status = "intro"
+    
+    return (status, volMaster,volMusic,volFX, masterLocked,musicLocked,FXLocked,locked)

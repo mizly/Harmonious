@@ -1,17 +1,34 @@
 from detection import isMouseOverRect
+from com.jogamp.opengl import GLContext, GL3
 
-def intro(spacing, status, introStarted, timer, yOffset, yOffset2, yOffset3, yOffset4): #Intro screen/animation
+def intro(ENABLE_P2D, spacing, status, introStarted, timer, yOffset, yOffset2, yOffset3, yOffset4): #Intro screen/animation
     if introStarted:
-        if timer > 0 and timer <= 60:
-            spacing = ((timer-60)*(timer-60)*(timer-60)*(timer-60)*0.00000848765+90) #Quartic function to ease spacing animation
-        if timer > 60 and timer <= 90:
-            yOffset = 0.28*displayHeight/(0.001*(timer-60)*(timer-60)*(timer-60)+2) - 0.14*displayHeight #Rational function to ease move up title screen
-        if timer > 90 and timer <= 120:
-            yOffset2 = (0.24*displayHeight/(0.001*(timer-80)*(timer-80)*(timer-80)+2) - 0.12*displayHeight) #Rational function to ease move up start button
-        if timer > 120 and timer <= 150:
-            yOffset3 = (0.24*displayHeight/(0.001*(timer-110)*(timer-110)*(timer-110)+2) - 0.12*displayHeight) #Rational function to ease move up options button
-        if timer > 150 and timer <= 180:
-            yOffset4 = (0.24*displayHeight/(0.001*(timer-140)*(timer-140)*(timer-140)+2) - 0.12*displayHeight) #Rational function to ease move up options button
+        if timer > 0:
+            if timer <= 60:
+                spacing = ((timer-60)*(timer-60)*(timer-60)*(timer-60)*0.00000848765+90) #Quartic function to ease spacing animation
+            else:
+                spacing = 90
+        if timer > 60:
+            if timer <= 90:
+                yOffset = 0.28*displayHeight/(0.001*(timer-60)*(timer-60)*(timer-60)+2) - 0.14*displayHeight #Rational function to ease move up title screen
+            else:
+                yOffset = 0.28*displayHeight/(0.001*(90-60)*(90-60)*(90-60)+2) - 0.14*displayHeight
+        if timer > 90:
+            if timer <= 120:
+                yOffset2 = (0.24*displayHeight/(0.001*(timer-80)*(timer-80)*(timer-80)+2) - 0.12*displayHeight) #Rational function to ease move up start button
+            else:
+                yOffset2 = (0.24*displayHeight/(0.001*(40)*(40)*(40)+2) - 0.12*displayHeight)
+        if timer > 120:
+            if timer <= 150:
+                yOffset3 = (0.24*displayHeight/(0.001*(timer-110)*(timer-110)*(timer-110)+2) - 0.12*displayHeight) #Rational function to ease move up options button
+            else:
+                yOffset3 = (0.24*displayHeight/(0.001*(40)*(40)*(40)+2) - 0.12*displayHeight)
+        if timer > 150:
+            if timer <= 180:
+                yOffset4 = (0.24*displayHeight/(0.001*(timer-140)*(timer-140)*(timer-140)+2) - 0.12*displayHeight) #Rational function to ease move up options button
+            else:
+                yOffset4 = (0.24*displayHeight/(0.001*(40)*(40)*(40)+2) - 0.12*displayHeight)
+
             
     push()
     background(200)
@@ -25,7 +42,8 @@ def intro(spacing, status, introStarted, timer, yOffset, yOffset2, yOffset3, yOf
     push()
     fill(255)
     blendMode(DIFFERENCE)
-    #GLContext.getCurrentGL().getGL3().glBlendFunc(GL3.GL_ONE_MINUS_DST_COLOR, GL3.GL_ZERO)
+    if ENABLE_P2D:
+        GLContext.getCurrentGL().getGL3().glBlendFunc(GL3.GL_ONE_MINUS_DST_COLOR, GL3.GL_ZERO)
     rect(displayWidth/4,displayHeight/2,displayWidth/2,displayHeight)
     pop()
     
