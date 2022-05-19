@@ -1,7 +1,18 @@
 from detection import isMouseOverRect
 from com.jogamp.opengl import GLContext, GL3
 
-def credit(ENABLE_P2D,status,timer,locked): #Credit screen
+def credit(ENABLE_P2D,status,timer,locked):
+    '''
+    Displays the credit screen.
+    
+    ENABLE_P2D (bool): Uses OpenGL rendering if True.
+    status (str): Status of the sketch.
+    timer (int): How many frames have passed since the sketch started.
+    locked (bool): Checks if back button's mouse press is locked.
+    
+    Return: status, timer, locked
+    '''
+    
     #Text
     push()
     background(200)

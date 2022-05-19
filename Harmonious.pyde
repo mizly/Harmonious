@@ -7,12 +7,18 @@ from level1 import level1
 ENABLE_P2D = False
 
 def settings():
+    '''
+    Sets the screen to fullscreen. Change ENABLE_P2D to True if you want to use OpenGL accelerated graphics.
+    '''
     if ENABLE_P2D:
         fullScreen(P2D)
     else:
         fullScreen()
     
-def setup(): #Setting up stuff
+def setup():
+    '''
+    Setups the sketch, and initializes variables for various functions.
+    '''
     stroke(255)
     strokeWeight(5)
     frameRate(60)
@@ -25,15 +31,18 @@ def setup(): #Setting up stuff
     textFont(cartograph)
     
     #Iinitializing global variables
-    global status, introStarted, spacing, timer
+    global status, spacing, timer
     global yOffset, yOffset2, yOffset3, yOffset4
     global volMaster, volMusic, volFX, masterLocked, musicLocked,FXLocked
     global locked
-    status, introStarted, spacing, timer = "intro", True, 200, 0
+    global level
+    global yInt,slope
+    status, spacing, timer = "level1", 200, 0
     yOffset, yOffset2, yOffset3, yOffset4 = 0,0,0,0
     volMaster,volMusic,volFX, masterLocked,musicLocked,FXLocked = 100,100,100,False,False,False
     locked = False
-
+    level = 1
+    yInt,slope = 0,0
     '''
     add_library('controlP5')
     global cp5
@@ -43,24 +52,33 @@ def setup(): #Setting up stuff
     cp5.getController("Quadratic coefficient").setPosition(int(displayWidth/1.5),int(displayHeight/9))
     cp5.getController("Quadratic coefficient").setRange(-10,10)'''
     
-def draw(): #MAIN FUNCTION
+def draw():
+    '''
+    Main draw function. Refreshes the screen __ times a second (defined by frameRate in setup)
+    '''
     global status, introStarted, spacing, timer
     global yOffset, yOffset2, yOffset3, yOffset4
     global volMaster, volMusic, volFX, masterLocked,musicLocked,FXLocked
     global locked
+    global level
+    global yInt,slope
     timer+=1
     background(255)
-    if status == "start":
-        status, timer,locked = levelSelect(ENABLE_P2D,status, timer,locked)
+    if status == "levelselect": #Level select screen
+        status, timer,locked, level,yInt,slope = levelSelect(ENABLE_P2D,status, timer,locked,level,yInt,slope)
     if status == "intro": #Title screen
-        spacing, status, introStarted, timer, yOffset, yOffset2, yOffset3, yOffset4 = intro(ENABLE_P2D,spacing, status, introStarted, timer, yOffset, yOffset2, yOffset3, yOffset4)
+        spacing, status, timer, yOffset, yOffset2, yOffset3, yOffset4 = intro(ENABLE_P2D,spacing, status, timer, yOffset, yOffset2, yOffset3, yOffset4)
     if status == "options": #Options screen
         status, volMaster,volMusic,volFX,masterLocked,musicLocked,FXLocked,locked = options(ENABLE_P2D,status, volMaster,volMusic,volFX,masterLocked,musicLocked,FXLocked,locked)
     if status == "credit": #Credit screen
         status, timer,locked = credit(ENABLE_P2D,status, timer,locked)
+    
+    #Levels
+    if status == "level1": #Level 1
+        status, timer,locked,yInt,slope = level1(ENABLE_P2D,status, timer,locked,yInt,slope)
         
-    if status == "level1":
-        status, timer,locked = level1(ENABLE_P2D,status, timer,locked)
+        
+        
 def graph():
     
     #quadraticValue = cp5.getController("Quadratic coefficient").getValue()

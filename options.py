@@ -1,6 +1,22 @@
 from detection import isMouseOverRect, isMouseOverCircle
 from com.jogamp.opengl import GLContext, GL3
-def options(ENABLE_P2D,status, volMaster,volMusic,volFX, masterLocked, musicLocked,FXLocked,locked): #Options screen
+def options(ENABLE_P2D, status, volMaster, volMusic, volFX, masterLocked, musicLocked, FXLocked, locked): #Options screen
+    '''
+    Displays options screen.
+    
+    ENABLE_P2D (bool): Uses OpenGL rendering if True.
+    status (str): Status of the sketch.
+    volMaster (int|float): Master volume.
+    volMusic (int|float): Music volume.
+    volFX (int|float): Effects volume.
+    masterLocked (bool): Checks if master slider is locked.
+    musicLocked (bool): Checks if music slider is locked.
+    FXLocked (bool): Checks if effects slider is locked.
+    locked (bool): Checks if back button's mouse press is locked.
+    
+    Return: status, volMaster, volMusic, volFX, masterLocked, musicLocked, FXLocked, locked
+    '''
+    
     #Text
     push()
     background(200)
