@@ -37,12 +37,14 @@ def setup():
     global locked
     global level
     global yInt,slope
+    global yIntLocked,slopeLocked
     status, spacing, timer = "level1", 200, 0
     yOffset, yOffset2, yOffset3, yOffset4 = 0,0,0,0
     volMaster,volMusic,volFX, masterLocked,musicLocked,FXLocked = 100,100,100,False,False,False
     locked = False
     level = 1
     yInt,slope = 0,0
+    yIntLocked,slopeLocked = False,False
     '''
     add_library('controlP5')
     global cp5
@@ -62,6 +64,7 @@ def draw():
     global locked
     global level
     global yInt,slope
+    global yIntLocked,slopeLocked
     timer+=1
     background(255)
     if status == "levelselect": #Level select screen
@@ -75,7 +78,7 @@ def draw():
     
     #Levels
     if status == "level1": #Level 1
-        status, timer,locked,yInt,slope = level1(ENABLE_P2D,status, timer,locked,yInt,slope)
+        status, timer,locked,yInt,slope,yIntLocked,slopeLocked = level1(ENABLE_P2D,status, timer,locked,yInt,slope,yIntLocked,slopeLocked)
         
         
         

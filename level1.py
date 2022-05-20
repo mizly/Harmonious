@@ -1,7 +1,7 @@
-from detection import isMouseOverRect
+from detection import isMouseOverRect, isMouseOverCircle
 from graph import linear
 from com.jogamp.opengl import GLContext, GL3
-def level1(ENABLE_P2D,status,timer,locked, yInt, slope): 
+def level1(ENABLE_P2D,status,timer,locked, yInt, slope, yIntLocked,slopeLocked): 
     '''
     Displays level 1.
     
@@ -32,7 +32,47 @@ def level1(ENABLE_P2D,status,timer,locked, yInt, slope):
     rect(displayWidth*0.75,displayHeight*0.8,displayWidth*0.15,displayHeight*0.015,30) #y-int
     pop()
     
+    #Slider text
+    push()
+    fill(55)
+    textAlign(LEFT)
+    textSize(50)
+    text("%.1f" % yInt,displayWidth*0.85,displayHeight*0.71)
+    text("%.1f" % slope,displayWidth*0.85,displayHeight*0.81)
+    pop()
+    
     #Sliderballs
+    push()
+    noStroke()
+    
+    #y-int
+    if isMouseOverCircle(displayWidth*0.75 + displayWidth*(0.15/20*yInt),displayHeight*0.7,displayHeight*0.03): #detect if mouse is over circle
+        fill(150)
+        if(mousePressed) and not slopeLocked: #detect mouse press, and lock on (this is to prevent the cursor from moving "too fast" for the slider)
+            yIntLocked = True
+    else:
+        fill(255)
+    if(not mousePressed): #unlock mouse
+        yIntLocked = False
+    if yIntLocked: #if slider is locked on execute slider movement
+        fill(150)
+        yInt = min(10,max(-10,(mouseX-displayWidth*0.755)/(displayWidth*0.15)*20)) #0.675 to #0.825 is from -10 to 10. Passes through a min/max filter to make sure the value is between -10 and 10
+    circle(displayWidth*0.75 + displayWidth*(0.15/20*yInt),displayHeight*0.7,displayHeight*0.03) #0.675 to #0.825 is from -10 to 10. The 0.15 is the percentage part in the first parameter
+    
+    #slope
+    if isMouseOverCircle(displayWidth*0.75 + displayWidth*(0.15/20*slope),displayHeight*0.8,displayHeight*0.03): #detect if mouse is over circle
+        fill(150)
+        if(mousePressed) and not yIntLocked: #detect mouse press, and lock on (this is to prevent the cursor from moving "too fast" for the slider)
+            slopeLocked = True
+    else:
+        fill(255)
+    if(not mousePressed): #unlock mouse
+        slopeLocked = False
+    if slopeLocked: #if slider is locked on execute slider movement
+        fill(150)
+        slope = min(10,max(-10,(mouseX-displayWidth*0.755)/(displayWidth*0.15)*20)) #0.675 to #0.825 is from -10 to 10. Passes through a min/max filter to make sure the value is between -10 and 10
+    circle(displayWidth*0.75 + displayWidth*(0.15/20*slope),displayHeight*0.8,displayHeight*0.03) #0.675 to #0.825 is from -10 to 10. The 0.15 is the percentage part in the first parameter
+    pop()
     
     #Invert effect
     push()
@@ -44,7 +84,7 @@ def level1(ENABLE_P2D,status,timer,locked, yInt, slope):
     pop()
     
     #Graph
-    linear(5,5)
+    linear(yInt,slope,3,0.5)
     
     #Back button
     push()
@@ -65,4 +105,4 @@ def level1(ENABLE_P2D,status,timer,locked, yInt, slope):
             if isMouseOverRect(displayWidth/12,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over back button
                 status = "levelselect"
     
-    return (status,timer,locked,yInt,slope)
+    return (status,timer,locked,yInt,slope,yIntLocked,slopeLocked)

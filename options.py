@@ -31,9 +31,9 @@ def options(ENABLE_P2D, status, volMaster, volMusic, volFX, masterLocked, musicL
     textAlign(RIGHT)
     textSize(50)
     fill(55)
-    text("Master Volume",displayWidth*0.4,displayHeight*0.4)
-    text("Music Volume",displayWidth*0.4,displayHeight*0.5)
-    text("Effects Volume",displayWidth*0.4,displayHeight*0.6)
+    text("Master Volume",displayWidth*0.4,displayHeight*0.415)
+    text("Music Volume",displayWidth*0.4,displayHeight*0.515)
+    text("Effects Volume",displayWidth*0.4,displayHeight*0.615)
     
     textAlign(LEFT)
     text(int(volMaster),displayWidth*0.6,displayHeight*0.4)
@@ -45,9 +45,9 @@ def options(ENABLE_P2D, status, volMaster, volMusic, volFX, masterLocked, musicL
     push()
     noStroke()
     fill(55)
-    rect(displayWidth*0.5,displayHeight*0.385,displayWidth*0.15,displayHeight*0.015,30) #Master
-    rect(displayWidth*0.5,displayHeight*0.485,displayWidth*0.15,displayHeight*0.015,30) #Music
-    rect(displayWidth*0.5,displayHeight*0.585,displayWidth*0.15,displayHeight*0.015,30) #Effects
+    rect(displayWidth*0.5,displayHeight*0.4,displayWidth*0.15,displayHeight*0.015,30) #Master
+    rect(displayWidth*0.5,displayHeight*0.5,displayWidth*0.15,displayHeight*0.015,30) #Music
+    rect(displayWidth*0.5,displayHeight*0.6,displayWidth*0.15,displayHeight*0.015,30) #Effects
     pop()
     
     #Invert effect
@@ -64,7 +64,7 @@ def options(ENABLE_P2D, status, volMaster, volMusic, volFX, masterLocked, musicL
     noStroke()
     
     #Master
-    if isMouseOverCircle(displayWidth*0.425 + displayWidth*(0.15/100*volMaster), displayHeight*0.385,displayHeight*0.03): #detect if mouse is over circle
+    if isMouseOverCircle(displayWidth*0.425 + displayWidth*(0.15/100*volMaster), displayHeight*0.4,displayHeight*0.03): #detect if mouse is over circle
         fill(150)
         if(mousePressed) and not musicLocked and not FXLocked: #detect mouse press, and lock on (this is to prevent the cursor from moving "too fast" for the slider)
             masterLocked = True
@@ -74,11 +74,11 @@ def options(ENABLE_P2D, status, volMaster, volMusic, volFX, masterLocked, musicL
         masterLocked = False
     if masterLocked: #if slider is locked on execute slider movement
         fill(150)
-        volMaster = min(100,max(0,(mouseX-displayWidth*0.425)/(displayWidth*0.15)*100)) #0.425 to #0.575 is from 0 to master volume. Passes through a min/max filter to make sure the value is between 0 and 100
-    circle(displayWidth*0.425 + displayWidth*(0.15/100*volMaster), displayHeight*0.385,displayHeight*0.03) #0.425 to #0.575 is from 0 to 100. The 0.15 is the percentage part in the first parameter
+        volMaster = min(100,max(0,(mouseX-displayWidth*0.425)/(displayWidth*0.15)*100)) #0.425 to #0.575 is from 0 to 100. Passes through a min/max filter to make sure the value is between 0 and 100
+    circle(displayWidth*0.425 + displayWidth*(0.15/100*volMaster), displayHeight*0.4,displayHeight*0.03) #0.425 to #0.575 is from 0 to 100. The 0.15 is the percentage part in the first parameter
     
     #Music
-    if isMouseOverCircle(displayWidth*0.425 + displayWidth*(0.15/100*volMusic), displayHeight*0.485,displayHeight*0.03): #detect if mouse is over circle
+    if isMouseOverCircle(displayWidth*0.425 + displayWidth*(0.15/100*volMusic), displayHeight*0.5,displayHeight*0.03): #detect if mouse is over circle
         fill(150)
         if(mousePressed) and not masterLocked and not FXLocked: #detect mouse press, and lock on (this is to prevent the cursor from moving "too fast" for the slider)
             musicLocked = True
@@ -88,11 +88,11 @@ def options(ENABLE_P2D, status, volMaster, volMusic, volFX, masterLocked, musicL
         musicLocked = False
     if musicLocked: #if slider is locked on execute slider movement
         fill(150)
-        volMusic = min(100,max(0,(mouseX-displayWidth*0.425)/(displayWidth*0.15)*100)) #0.425 to #0.575 is from 0 to master volume. Passes through a min/max filter to make sure the value is between 0 and 100
-    circle(displayWidth*0.425 + displayWidth*(0.15/100*volMusic), displayHeight*0.485,displayHeight*0.03) #0.425 to #0.575 is from 0 to 100. The 0.15 is the percentage part in the first parameter
+        volMusic = min(100,max(0,(mouseX-displayWidth*0.425)/(displayWidth*0.15)*100)) #0.425 to #0.575 is from 0 to 100. Passes through a min/max filter to make sure the value is between 0 and 100
+    circle(displayWidth*0.425 + displayWidth*(0.15/100*volMusic), displayHeight*0.5,displayHeight*0.03) #0.425 to #0.575 is from 0 to 100. The 0.15 is the percentage part in the first parameter
     
     #Effects
-    if isMouseOverCircle(displayWidth*0.425 + displayWidth*(0.15/100*volFX), displayHeight*0.585,displayHeight*0.03): #detect if mouse is over circle
+    if isMouseOverCircle(displayWidth*0.425 + displayWidth*(0.15/100*volFX), displayHeight*0.6,displayHeight*0.03): #detect if mouse is over circle
         fill(150)
         if(mousePressed) and not masterLocked and not musicLocked: #detect mouse press, and lock on (this is to prevent the cursor from moving "too fast" for the slider)
             FXLocked = True
@@ -102,8 +102,8 @@ def options(ENABLE_P2D, status, volMaster, volMusic, volFX, masterLocked, musicL
         FXLocked = False
     if FXLocked: #if slider is locked on execute slider movement
         fill(150)
-        volFX = min(100,max(0,(mouseX-displayWidth*0.425)/(displayWidth*0.15)*100)) #0.425 to #0.575 is from 0 to master volume. Passes through a min/max filter to make sure the value is between 0 and 100
-    circle(displayWidth*0.425 + displayWidth*(0.15/100*volFX), displayHeight*0.585,displayHeight*0.03) #0.425 to #0.575 is from 0 to 100. The 0.15 is the percentage part in the first parameter
+        volFX = min(100,max(0,(mouseX-displayWidth*0.425)/(displayWidth*0.15)*100)) #0.425 to #0.575 is from 0 to 100. Passes through a min/max filter to make sure the value is between 0 and 100
+    circle(displayWidth*0.425 + displayWidth*(0.15/100*volFX), displayHeight*0.6,displayHeight*0.03) #0.425 to #0.575 is from 0 to 100. The 0.15 is the percentage part in the first parameter
     
     pop()
     
