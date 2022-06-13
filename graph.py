@@ -1,6 +1,10 @@
-def linear(yInt,slope,targetYInt,targetSlope):
-    yInt = float("%.1f" % yInt)
-    slope = float("%.1f" % slope)
+def drawGrid():
+    '''
+    Draws the grid for a graph
+    
+    Return: None
+    '''
+    
     #axis lines
     push()
     strokeWeight(5)
@@ -23,6 +27,16 @@ def linear(yInt,slope,targetYInt,targetSlope):
             text(i,displayWidth*0.495,displayHeight*0.5 + displayHeight*0.035*-i)
             circle(displayWidth*0.5,displayHeight*0.5 + displayHeight*0.035*i,5)  
     pop()
+
+def linear(yInt,slope,targetYInt,targetSlope):
+    '''
+    Draws 2 linear lines (target and user), converting raw values to fit the grid
+    
+    Return: None
+    '''
+    
+    yInt = float("%.1f" % yInt)
+    slope = float("%.1f" % slope)
     
     #start coords
     if (slope*-10)+yInt < -10: #check if out of range
@@ -32,6 +46,13 @@ def linear(yInt,slope,targetYInt,targetSlope):
     else:
         startPoint = (-10,(slope*-10)+yInt)
         
+    if (targetSlope*-10)+targetYInt < -10: #check if out of range
+        targetPoint = ((-10-targetYInt)/targetSlope,-10)
+    elif (targetSlope*-10)+targetYInt > 10:
+        targetPoint = ((10-targetYInt)/targetSlope, 10)
+    else:
+        targetPoint = (-10,(targetSlope*-10)+targetYInt)
+        
     #end coords
     if (slope*10)+yInt < -10: #check if out of range
         endPoint = ((-10-yInt)/slope,-10)
@@ -39,10 +60,20 @@ def linear(yInt,slope,targetYInt,targetSlope):
         endPoint = ((10-yInt)/slope,10)
     else:
         endPoint = (10,(slope*10)+yInt)
+        
+    if (targetSlope*10)+targetYInt < -10: #check if out of range
+        targetendPoint = ((-10-targetYInt)/targetSlope,-10)
+    elif (targetSlope*10)+targetYInt > 10:
+        targetendPoint = ((10-targetYInt)/targetSlope,10)
+    else:
+        targetendPoint = (10,(targetSlope*10)+targetYInt)
     
     #function line
-    push()
-    strokeWeight(10)
-    stroke(0,200)
-    line(startPoint[0]*displayWidth*0.04+displayWidth*0.5,-startPoint[1]*displayHeight*0.035+displayHeight*0.50,endPoint[0]*displayWidth*0.04+displayWidth*0.5,-endPoint[1]*displayHeight*0.035+displayHeight*0.50) #drawing the line using coords while scaling it to the screen
-    pop()
+    if(yInt != targetYInt or slope!=targetSlope):
+        push()
+        strokeWeight(10)
+        stroke(0,255)
+        line(startPoint[0]*displayWidth*0.04+displayWidth*0.5,-startPoint[1]*displayHeight*0.035+displayHeight*0.50,endPoint[0]*displayWidth*0.04+displayWidth*0.5,-endPoint[1]*displayHeight*0.035+displayHeight*0.50) #drawing the line using coords while scaling it to the screen
+        stroke(255,200)
+        line(targetPoint[0]*displayWidth*0.04+displayWidth*0.5,-targetPoint[1]*displayHeight*0.035+displayHeight*0.50,targetendPoint[0]*displayWidth*0.04+displayWidth*0.5,-targetendPoint[1]*displayHeight*0.035+displayHeight*0.50) #drawing the line using coords while scaling it to the screen
+        pop()

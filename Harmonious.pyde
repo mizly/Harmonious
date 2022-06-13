@@ -4,6 +4,7 @@ from options import options
 from credit import credit
 from levelSelect import levelSelect
 from level1 import level1
+from detection import isMouseOverRect
 ENABLE_P2D = False
 
 def settings():
@@ -34,14 +35,14 @@ def setup():
     global status, spacing, timer
     global yOffset, yOffset2, yOffset3, yOffset4
     global volMaster, volMusic, volFX, masterLocked, musicLocked,FXLocked
-    global locked
+    global locked, locked2
     global level
     global yInt,slope
     global yIntLocked,slopeLocked
-    status, spacing, timer = "level1", 200, 0
+    status, spacing, timer = "options", 200, 0
     yOffset, yOffset2, yOffset3, yOffset4 = 0,0,0,0
     volMaster,volMusic,volFX, masterLocked,musicLocked,FXLocked = 100,100,100,False,False,False
-    locked = False
+    locked,locked2 = False,False
     level = 1
     yInt,slope = 0,0
     yIntLocked,slopeLocked = False,False
@@ -61,7 +62,7 @@ def draw():
     global status, introStarted, spacing, timer
     global yOffset, yOffset2, yOffset3, yOffset4
     global volMaster, volMusic, volFX, masterLocked,musicLocked,FXLocked
-    global locked
+    global locked,locked2
     global level
     global yInt,slope
     global yIntLocked,slopeLocked
@@ -78,36 +79,50 @@ def draw():
     
     #Levels
     if status == "level1": #Level 1
-        status, timer,locked,yInt,slope,yIntLocked,slopeLocked = level1(ENABLE_P2D,status, timer,locked,yInt,slope,yIntLocked,slopeLocked)
-        
-        
-        
-def graph():
-    
-    #quadraticValue = cp5.getController("Quadratic coefficient").getValue()
-    quadraticValue = 2
-    background(200)
-    #Drawing the outline of the graph
-    line(displayWidth/2,0,displayWidth/2,displayHeight)
-    line(0,displayHeight/2,displayWidth,displayHeight/2)
-    fill(0,0,0)
-    
-    for a in range(40):
-        text(a-20,displayWidth/40*a,displayHeight/2)
-        text((a-20)*-1, displayWidth/2, displayHeight/40*a)
+        status, timer,locked,locked2,yInt,slope,yIntLocked,slopeLocked,level = level1(ENABLE_P2D,status, timer,locked,locked2,yInt,slope,yIntLocked,slopeLocked,level)
 
-    text("Plotting y = %.1fx^2" % quadraticValue , displayWidth/1.5, displayHeight/10)
+def keyPressed():
+    '''
+    Global function to detect singular keypresses
     
-    startCoordsX = -5
-    startCoordsY = 25
-    middleCoordsX = 0
-    middleCoordsY = 0
-    endCoordsX = 5
-    endCoordsY = 25
+    Return: none
+    '''
     
-    noFill()
+    global status, introStarted, spacing, timer
+    global yOffset, yOffset2, yOffset3, yOffset4
+    global volMaster, volMusic, volFX, masterLocked,musicLocked,FXLocked
+    global locked,locked2
+    global level
+    global yInt,slope
+    global yIntLocked,slopeLocked
     
-    beginShape()
-    vertex((startCoordsX+20)*displayWidth/40,(startCoordsY*-1+20)*displayHeight/40)
-    quadraticVertex((middleCoordsX+20)*displayWidth/40,(middleCoordsY+startCoordsY+20)*displayHeight/40,(endCoordsX+20)*displayWidth/40,(endCoordsY*-1+20)*displayHeight/40)
-    endShape()
+    #arrow key controls for fine slider movements
+    if status == "level1":
+        if isMouseOverRect(displayWidth*0.75,displayHeight*0.7,displayWidth*0.15,displayHeight*0.015,30):
+            if keyCode == LEFT:
+                yInt = min(10,max(-10,yInt-0.1))
+            if keyCode == RIGHT:
+                yInt = min(10,max(-10,yInt+0.1))
+                
+        if isMouseOverRect(displayWidth*0.75,displayHeight*0.8,displayWidth*0.15,displayHeight*0.015,30):
+            if keyCode == LEFT:
+                slope = min(10,max(-10,slope-0.1))
+            if keyCode == RIGHT:
+                slope = min(10,max(-10,slope+0.1))
+                
+    if status == "options":
+        if isMouseOverRect(displayWidth*0.5,displayHeight*0.4,displayWidth*0.15,displayHeight*0.015,30): #Master
+            if keyCode == LEFT:
+                volMaster = min(100,max(0,volMaster-1))
+            if keyCode == RIGHT:
+                volMaster = min(100,max(0,volMaster+1))
+        if isMouseOverRect(displayWidth*0.5,displayHeight*0.5,displayWidth*0.15,displayHeight*0.015,30): #Music
+            if keyCode == LEFT:
+                volMusic = min(100,max(0,volMusic-1))
+            if keyCode == RIGHT:
+                volMusic = min(100,max(0,volMusic+1))
+        if isMouseOverRect(displayWidth*0.5,displayHeight*0.6,displayWidth*0.15,displayHeight*0.015,30): #Effects
+            if keyCode == LEFT:
+                volFX = min(100,max(0,volFX-1))
+            if keyCode == RIGHT:
+                volFX = min(100,max(0,volFX+1))

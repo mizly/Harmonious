@@ -1,7 +1,7 @@
 from detection import isMouseOverRect, isMouseOverCircle
-from graph import linear
+from graph import drawGrid,linear
 from com.jogamp.opengl import GLContext, GL3
-def level1(ENABLE_P2D,status,timer,locked, yInt, slope, yIntLocked,slopeLocked): 
+def level1(ENABLE_P2D,status,timer,locked, locked2,yInt, slope, yIntLocked,slopeLocked, level): 
     '''
     Displays level 1.
     
@@ -28,8 +28,8 @@ def level1(ENABLE_P2D,status,timer,locked, yInt, slope, yIntLocked,slopeLocked):
     push()
     noStroke()
     fill(55)
-    rect(displayWidth*0.75,displayHeight*0.7,displayWidth*0.15,displayHeight*0.015,30) #slope
-    rect(displayWidth*0.75,displayHeight*0.8,displayWidth*0.15,displayHeight*0.015,30) #y-int
+    rect(displayWidth*0.75,displayHeight*0.7,displayWidth*0.15,displayHeight*0.015,30) #y-int
+    rect(displayWidth*0.75,displayHeight*0.8,displayWidth*0.15,displayHeight*0.015,30) #slope
     pop()
     
     #Slider text
@@ -74,6 +74,33 @@ def level1(ENABLE_P2D,status,timer,locked, yInt, slope, yIntLocked,slopeLocked):
     circle(displayWidth*0.75 + displayWidth*(0.15/20*slope),displayHeight*0.8,displayHeight*0.03) #0.675 to #0.825 is from -10 to 10. The 0.15 is the percentage part in the first parameter
     pop()
     
+    #Graph
+    linear(yInt,slope,3,0.5)
+    
+    #Check if correct
+    if float("%.1f" % yInt) == 3 and float("%.1f" % slope) == 0.5:
+        if level < 2:
+            level = 2
+            
+    #Next button
+    if level>1:
+        push()
+        textSize(50)
+        if isMouseOverRect(displayWidth/12*11,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over next button
+            if mousePressed: #lock mouse
+                locked = True
+            fill(0)
+        else:
+            fill(55)
+        text("Next",displayWidth/12*11,displayHeight/12)
+        pop()
+        
+        if locked: #unlock mouse
+            if not mousePressed:
+                locked = False
+                if isMouseOverRect(displayWidth/12*11,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over next button
+                    status = "level2"
+    
     #Invert effect
     push()
     fill(255)
@@ -83,26 +110,26 @@ def level1(ENABLE_P2D,status,timer,locked, yInt, slope, yIntLocked,slopeLocked):
     rect(displayWidth/4,displayHeight/2,displayWidth/2,displayHeight)
     pop()
     
-    #Graph
-    linear(yInt,slope,3,0.5)
-    
+    #Render grid
+    drawGrid()
+
     #Back button
     push()
     textSize(50)
     #rect(displayWidth/12,displayHeight/15,displayWidth/16,displayHeight/25) #hitbox for back button
     if isMouseOverRect(displayWidth/12,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over back button
         if mousePressed: #lock mouse
-            locked = True
+            locked2 = True
         fill(255)
     else:
         fill(200)
     text("Back",displayWidth/12,displayHeight/12)
     pop()
     
-    if locked: #unlock mouse
+    if locked2: #unlock mouse
         if not mousePressed:
-            locked = False
+            locked2 = False
             if isMouseOverRect(displayWidth/12,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over back button
                 status = "levelselect"
     
-    return (status,timer,locked,yInt,slope,yIntLocked,slopeLocked)
+    return (status,timer,locked,locked2,yInt,slope,yIntLocked,slopeLocked, level)
