@@ -4,6 +4,10 @@ from options import options
 from credit import credit
 from levelSelect import levelSelect
 from level1 import level1
+from level2 import level2
+from level3 import level3
+from level4 import level4
+from level5 import level5
 from detection import isMouseOverRect
 ENABLE_P2D = False
 
@@ -37,23 +41,15 @@ def setup():
     global volMaster, volMusic, volFX, masterLocked, musicLocked,FXLocked
     global locked, locked2
     global level
-    global yInt,slope
-    global yIntLocked,slopeLocked
-    status, spacing, timer = "options", 200, 0
+    global yInt,slope, quadratic
+    global yIntLocked,slopeLocked, quadraticLocked
+    status, spacing, timer = "level5", 200, 0
     yOffset, yOffset2, yOffset3, yOffset4 = 0,0,0,0
     volMaster,volMusic,volFX, masterLocked,musicLocked,FXLocked = 100,100,100,False,False,False
     locked,locked2 = False,False
-    level = 1
-    yInt,slope = 0,0
-    yIntLocked,slopeLocked = False,False
-    '''
-    add_library('controlP5')
-    global cp5
-    cp5 = ControlP5(this)
-    print(ControlP5.printPublicMethodsFor(Slider))
-    cp5.addSlider("Quadratic coefficient")
-    cp5.getController("Quadratic coefficient").setPosition(int(displayWidth/1.5),int(displayHeight/9))
-    cp5.getController("Quadratic coefficient").setRange(-10,10)'''
+    level = 5
+    yInt,slope,quadratic = 0,0,0
+    yIntLocked,slopeLocked,quadraticLocked = False,False,False
     
 def draw():
     '''
@@ -64,10 +60,11 @@ def draw():
     global volMaster, volMusic, volFX, masterLocked,musicLocked,FXLocked
     global locked,locked2
     global level
-    global yInt,slope
-    global yIntLocked,slopeLocked
+    global yInt,slope,quadratic
+    global yIntLocked,slopeLocked,quadraticLocked
     timer+=1
     background(255)
+    
     if status == "levelselect": #Level select screen
         status, timer,locked, level,yInt,slope = levelSelect(ENABLE_P2D,status, timer,locked,level,yInt,slope)
     if status == "intro": #Title screen
@@ -78,8 +75,10 @@ def draw():
         status, timer,locked = credit(ENABLE_P2D,status, timer,locked)
     
     #Levels
-    if status == "level1": #Level 1
-        status, timer,locked,locked2,yInt,slope,yIntLocked,slopeLocked,level = level1(ENABLE_P2D,status, timer,locked,locked2,yInt,slope,yIntLocked,slopeLocked,level)
+    if status in ["level1","level2","level3","level4"]:
+        status, timer,locked,locked2,yInt,slope,yIntLocked,slopeLocked,level = globals()[status](ENABLE_P2D,status, timer,locked,locked2,yInt,slope,yIntLocked,slopeLocked,level)
+    if status in ["level5","level6"]:
+        status, timer,locked,locked2,yInt,slope,quadratic,yIntLocked,slopeLocked,quadraticLocked,level = globals()[status](ENABLE_P2D,status, timer,locked,locked2,yInt,slope,quadratic,yIntLocked,slopeLocked,quadratic,level)
 
 def keyPressed():
     '''
@@ -97,13 +96,27 @@ def keyPressed():
     global yIntLocked,slopeLocked
     
     #arrow key controls for fine slider movements
-    if status == "level1":
+    if status == 'level1':
         if isMouseOverRect(displayWidth*0.75,displayHeight*0.7,displayWidth*0.15,displayHeight*0.015,30):
             if keyCode == LEFT:
                 yInt = min(10,max(-10,yInt-0.1))
             if keyCode == RIGHT:
                 yInt = min(10,max(-10,yInt+0.1))
+    
+    if status == "level2":        
+        if isMouseOverRect(displayWidth*0.75,displayHeight*0.7,displayWidth*0.15,displayHeight*0.015,30):
+            if keyCode == LEFT:
+                slope = min(10,max(-10,slope-0.1))
+            if keyCode == RIGHT:
+                slope = min(10,max(-10,slope+0.1))
                 
+    if status in ["level3","level4"]:
+        if isMouseOverRect(displayWidth*0.75,displayHeight*0.7,displayWidth*0.15,displayHeight*0.015,30):
+            if keyCode == LEFT:
+                yInt = min(10,max(-10,yInt-0.1))
+            if keyCode == RIGHT:
+                yInt = min(10,max(-10,yInt+0.1))
+     
         if isMouseOverRect(displayWidth*0.75,displayHeight*0.8,displayWidth*0.15,displayHeight*0.015,30):
             if keyCode == LEFT:
                 slope = min(10,max(-10,slope-0.1))
