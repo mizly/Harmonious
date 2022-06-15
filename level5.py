@@ -1,5 +1,5 @@
 from detection import isMouseOverRect, isMouseOverCircle
-from graph import drawGrid,linear
+from graph import drawGrid,parabola
 from com.jogamp.opengl import GLContext, GL3
 def level5(ENABLE_P2D,status,timer,locked, locked2,yInt, slope, quadratic,yIntLocked,slopeLocked, quadraticLocked, level): 
     '''
@@ -96,15 +96,15 @@ def level5(ENABLE_P2D,status,timer,locked, locked2,yInt, slope, quadratic,yIntLo
     pop()
     
     #Graph
-    linear(yInt,slope,3,0.5)
+    parabola(yInt,slope,quadratic,1,0,1)
     
     #Check if correct
-    if float("%.1f" % yInt) == 3 and float("%.1f" % slope) == 0.5:
+    if float("%.1f" % yInt) == 1 and float("%.1f" % slope) == 0 and float("%.1f" % quadratic) == 1:
         if level < 6:
             level = 6
             
     #Next button
-    if level>1:
+    if level>5:
         push()
         textSize(50)
         if isMouseOverRect(displayWidth/12*11,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over next button

@@ -77,3 +77,43 @@ def linear(yInt,slope,targetYInt,targetSlope):
         stroke(255,200)
         line(targetPoint[0]*displayWidth*0.04+displayWidth*0.5,-targetPoint[1]*displayHeight*0.035+displayHeight*0.50,targetendPoint[0]*displayWidth*0.04+displayWidth*0.5,-targetendPoint[1]*displayHeight*0.035+displayHeight*0.50) #drawing the line using coords while scaling it to the screen
         pop()
+        
+def parabola(yInt,slope,quadratic,targetYInt,targetSlope,targetQuadratic):
+    '''
+    Draws 2 parabolas lines (target and user), converting raw values to fit the grid
+    
+    Return: None
+    '''
+    yInt = float("%.1f" % yInt)
+    slope = float("%.1f" % slope)
+    quadratic = float("%.1f" % quadratic)
+    
+    point1 = (-10, quadratic*100 + slope*-10 + yInt)
+    point2 = (10, quadratic*100 + slope*10 + yInt)
+    targetPoint1 = (-10, targetQuadratic*100 + targetSlope*-10 + targetYInt)
+    targetPoint2 = (10, targetQuadratic*100 + targetSlope*10 + targetYInt)
+    print(targetPoint1,targetPoint2)
+    '''
+    Control point is the intersection of the two tangents. For f(x) ax^2 + bx + c, the tangent is given by 2ax + b
+    f'(-10) = -20a+b. f(-10) = 100a-10b+c. Therefore the equation of the first tangent is then (-20a+b)x + (c-100a)
+    The equation of the second tangent is then (20a+b)x + (c-100a)
+    The result... x = 0. I should've realized right away haha
+    '''
+    controlPoint = (0, yInt-(100*quadratic))
+    targetControlPoint = (0, targetYInt-(100*targetQuadratic))
+    
+    if(yInt != targetYInt or slope!=targetSlope or quadratic!=targetQuadratic):
+        push()
+        noFill()
+        strokeWeight(10)
+        stroke(0,255)
+        beginShape()
+        vertex(point1[0]*displayWidth*0.04+displayWidth*0.5,-point1[1]*displayHeight*0.035+displayHeight*0.50)
+        quadraticVertex(controlPoint[0]*displayWidth*0.04+displayWidth*0.5,-controlPoint[1]*displayHeight*0.035+displayHeight*0.50,point2[0]*displayWidth*0.04+displayWidth*0.5,-point2[1]*displayHeight*0.035+displayHeight*0.50)
+        endShape()
+        stroke(255,200)
+        beginShape()
+        vertex(targetPoint1[0]*displayWidth*0.04+displayWidth*0.5,-targetPoint1[1]*displayHeight*0.035+displayHeight*0.50)
+        quadraticVertex(targetControlPoint[0]*displayWidth*0.04+displayWidth*0.5,-targetControlPoint[1]*displayHeight*0.035+displayHeight*0.50,targetPoint2[0]*displayWidth*0.04+displayWidth*0.5,-targetPoint2[1]*displayHeight*0.035+displayHeight*0.50)
+        endShape()
+        pop()

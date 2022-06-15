@@ -47,7 +47,7 @@ def setup():
     yOffset, yOffset2, yOffset3, yOffset4 = 0,0,0,0
     volMaster,volMusic,volFX, masterLocked,musicLocked,FXLocked = 100,100,100,False,False,False
     locked,locked2 = False,False
-    level = 5
+    level = 3
     yInt,slope,quadratic = 0,0,0
     yIntLocked,slopeLocked,quadraticLocked = False,False,False
     
@@ -77,8 +77,8 @@ def draw():
     #Levels
     if status in ["level1","level2","level3","level4"]:
         status, timer,locked,locked2,yInt,slope,yIntLocked,slopeLocked,level = globals()[status](ENABLE_P2D,status, timer,locked,locked2,yInt,slope,yIntLocked,slopeLocked,level)
-    if status in ["level5","level6"]:
-        status, timer,locked,locked2,yInt,slope,quadratic,yIntLocked,slopeLocked,quadraticLocked,level = globals()[status](ENABLE_P2D,status, timer,locked,locked2,yInt,slope,quadratic,yIntLocked,slopeLocked,quadratic,level)
+    if status in ["level5","level6","level7","level8"]:
+        status, timer,locked,locked2,yInt,slope,quadratic,yIntLocked,slopeLocked,quadraticLocked,level = globals()[status](ENABLE_P2D,status, timer,locked,locked2,yInt,slope,quadratic,yIntLocked,slopeLocked,quadraticLocked,level)
 
 def keyPressed():
     '''
@@ -87,13 +87,8 @@ def keyPressed():
     Return: none
     '''
     
-    global status, introStarted, spacing, timer
-    global yOffset, yOffset2, yOffset3, yOffset4
-    global volMaster, volMusic, volFX, masterLocked,musicLocked,FXLocked
-    global locked,locked2
-    global level
-    global yInt,slope
-    global yIntLocked,slopeLocked
+    global status
+    global yInt,slope, quadratic
     
     #arrow key controls for fine slider movements
     if status == 'level1':
@@ -122,6 +117,25 @@ def keyPressed():
                 slope = min(10,max(-10,slope-0.1))
             if keyCode == RIGHT:
                 slope = min(10,max(-10,slope+0.1))
+                
+    if status in ["level5","level6"]:
+        if isMouseOverRect(displayWidth*0.75,displayHeight*0.6,displayWidth*0.15,displayHeight*0.015,30):
+            if keyCode == LEFT:
+                yInt = min(10,max(-10,yInt-0.1))
+            if keyCode == RIGHT:
+                yInt = min(10,max(-10,yInt+0.1))
+     
+        if isMouseOverRect(displayWidth*0.75,displayHeight*0.7,displayWidth*0.15,displayHeight*0.015,30):
+            if keyCode == LEFT:
+                slope = min(10,max(-10,slope-0.1))
+            if keyCode == RIGHT:
+                slope = min(10,max(-10,slope+0.1))
+                
+        if isMouseOverRect(displayWidth*0.75,displayHeight*0.8,displayWidth*0.15,displayHeight*0.015,30):
+            if keyCode == LEFT:
+                quadratic = min(10,max(-10,quadratic-0.1))
+            if keyCode == RIGHT:
+                quadratic = min(10,max(-10,quadratic+0.1))
                 
     if status == "options":
         if isMouseOverRect(displayWidth*0.5,displayHeight*0.4,displayWidth*0.15,displayHeight*0.015,30): #Master
