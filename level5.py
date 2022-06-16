@@ -12,11 +12,13 @@ def level5(ENABLE_P2D,status,timer,locked, locked2,yInt, slope, quadratic,yIntLo
     locked2 (bool): Checks if back button's mouse press is locked.
     yInt (int|float): Y-intercept of graphs.
     slope (int|float): Slope of graphs.
+    quadratic (int|float): Quadratic coefficient of graphs.
     yIntLocked (bool): Check if y-int slider is locked on.
     slopeLocked (bool): Check if slope slider is locked on.
+    quadraticLocked (bool): Check if quadratic slider is locked on.
     level (int): Current highest level
     
-    Return: status, timer, locked, locked2, yInt, slope, yIntLocked, slopeLocked, level
+    Return: status, timer, locked, locked2, yInt, slope, quadratic, yIntLocked, slopeLocked, quadraticLocked, level
     '''
     
     #Text
@@ -104,7 +106,6 @@ def level5(ENABLE_P2D,status,timer,locked, locked2,yInt, slope, quadratic,yIntLo
             level = 6
             
     #Next button
-    if level>5:
         push()
         textSize(50)
         if isMouseOverRect(displayWidth/12*11,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over next button
@@ -121,6 +122,7 @@ def level5(ENABLE_P2D,status,timer,locked, locked2,yInt, slope, quadratic,yIntLo
                 locked = False
                 if isMouseOverRect(displayWidth/12*11,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over next button
                     status = "level6"
+                    yInt, slope, quadratic = 0,0,0
     
     #Invert effect
     push()

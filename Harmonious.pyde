@@ -3,12 +3,12 @@ from intro import intro
 from options import options
 from credit import credit
 from levelSelect import levelSelect
-from level1 import level1
-from level2 import level2
-from level3 import level3
-from level4 import level4
-from level5 import level5
 from detection import isMouseOverRect
+
+for i in range(8):
+    exec("from level%s import level%s" % (str(i+1),str(i+1)))
+
+
 ENABLE_P2D = False
 
 def settings():
@@ -43,11 +43,11 @@ def setup():
     global level
     global yInt,slope, quadratic
     global yIntLocked,slopeLocked, quadraticLocked
-    status, spacing, timer = "level5", 200, 0
+    status, spacing, timer = "intro", 200, 0
     yOffset, yOffset2, yOffset3, yOffset4 = 0,0,0,0
     volMaster,volMusic,volFX, masterLocked,musicLocked,FXLocked = 100,100,100,False,False,False
     locked,locked2 = False,False
-    level = 3
+    level = 1
     yInt,slope,quadratic = 0,0,0
     yIntLocked,slopeLocked,quadraticLocked = False,False,False
     
@@ -66,7 +66,7 @@ def draw():
     background(255)
     
     if status == "levelselect": #Level select screen
-        status, timer,locked, level,yInt,slope = levelSelect(ENABLE_P2D,status, timer,locked,level,yInt,slope)
+        status, timer,locked, level,yInt,slope,quadratic = levelSelect(ENABLE_P2D,status, timer,locked,level,yInt,slope,quadratic)
     if status == "intro": #Title screen
         spacing, status, timer, yOffset, yOffset2, yOffset3, yOffset4 = intro(ENABLE_P2D,spacing, status, timer, yOffset, yOffset2, yOffset3, yOffset4)
     if status == "options": #Options screen
@@ -80,6 +80,7 @@ def draw():
     if status in ["level5","level6","level7","level8"]:
         status, timer,locked,locked2,yInt,slope,quadratic,yIntLocked,slopeLocked,quadraticLocked,level = globals()[status](ENABLE_P2D,status, timer,locked,locked2,yInt,slope,quadratic,yIntLocked,slopeLocked,quadraticLocked,level)
 
+    #text(timer,200,200)
 def keyPressed():
     '''
     Global function to detect singular keypresses
@@ -118,7 +119,7 @@ def keyPressed():
             if keyCode == RIGHT:
                 slope = min(10,max(-10,slope+0.1))
                 
-    if status in ["level5","level6"]:
+    if status in ["level5","level6","level7","level8"]:
         if isMouseOverRect(displayWidth*0.75,displayHeight*0.6,displayWidth*0.15,displayHeight*0.015,30):
             if keyCode == LEFT:
                 yInt = min(10,max(-10,yInt-0.1))

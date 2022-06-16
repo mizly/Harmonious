@@ -71,6 +71,7 @@ def intro(ENABLE_P2D, spacing, status, timer, yOffset, yOffset2, yOffset3, yOffs
         fill(255,float(timer-90)/30*255) #Opacity is the 2nd parameter, takes the frames between 90 and 120 and uses that
     else:
         if(mousePressed):
+            timer = 0
             status = "levelselect"
         fill(180,float(timer-90)/30*255) #Opacity is the 2nd parameter, takes the frames between 90 and 120 and uses that
     stroke(0,float(timer-90)/30*255)
@@ -101,6 +102,19 @@ def intro(ENABLE_P2D, spacing, status, timer, yOffset, yOffset2, yOffset3, yOffs
     rect(displayWidth/2,displayHeight/2+yOffset4+ 0.36*displayHeight, displayWidth/6, displayHeight/10, 28);
     fill(0,float(timer-150)/30*255)
     text("Credits",displayWidth/2,displayHeight/1.93+yOffset4 + 0.36*displayHeight)
+    pop()
+    
+    #Quit button
+    push()
+    if(not isMouseOverRect(displayWidth*0.94,displayHeight*0.05 + displayWidth*0.01, displayWidth*0.02, displayWidth*0.02)):
+        stroke(55,float(timer-150)/30*255) #Opacity is the 2nd parameter, takes the frames between 150 and 180 and uses that
+    else:
+        stroke(0,float(timer-150)/30*255)
+        if mousePressed:
+            exit()
+    strokeWeight(10)
+    line(displayWidth*0.93, displayHeight*0.05,displayWidth*0.95,displayHeight*0.05+displayWidth*0.02)
+    line(displayWidth*0.93, displayHeight*0.05+displayWidth*0.02,displayWidth*0.95,displayHeight*0.05)
     pop()
     
     return(spacing, status, timer, yOffset, yOffset2, yOffset3, yOffset4)

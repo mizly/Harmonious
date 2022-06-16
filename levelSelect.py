@@ -1,6 +1,6 @@
 from detection import isMouseOverRect
 from com.jogamp.opengl import GLContext, GL3
-def levelSelect(ENABLE_P2D,status,timer,locked,level,yInt,slope):
+def levelSelect(ENABLE_P2D,status,timer,locked,level,yInt,slope,quadratic):
     '''
     Displays level selection screen.
     
@@ -12,7 +12,7 @@ def levelSelect(ENABLE_P2D,status,timer,locked,level,yInt,slope):
     yInt (int|float): Y-intercept of graphs.
     slope (int|float): Slope of graphs.
     
-    Return: status, timer, locked, level, yInt, slope
+    Return: status, timer, locked, level, yInt, slope,quadratic
     '''
     
     #Text
@@ -34,7 +34,6 @@ def levelSelect(ENABLE_P2D,status,timer,locked,level,yInt,slope):
                 if (i+1) > level: #check if level is available
                     print("level locked")
                 else:
-                    yInt, slope = 0, 0
                     status = "level%d" % (i+1)
         else:
             if (i+1) > level: #check if level is available
@@ -89,5 +88,5 @@ def levelSelect(ENABLE_P2D,status,timer,locked,level,yInt,slope):
             locked = False
             if isMouseOverRect(displayWidth/12,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over back button
                 status = "intro"
-    
-    return (status,timer,locked,level,yInt,slope)
+    yInt, slope,quadratic = 0, 0, 0
+    return (status,timer,locked,level,yInt,slope,quadratic)
