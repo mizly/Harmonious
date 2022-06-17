@@ -1,5 +1,6 @@
 from detection import isMouseOverRect
 from com.jogamp.opengl import GLContext, GL3
+shakeValue,shakeNumber,shakeTimer = 0,0,0
 def levelSelect(ENABLE_P2D,status,timer,locked,level,yInt,slope,quadratic):
     '''
     Displays level selection screen.
@@ -14,7 +15,7 @@ def levelSelect(ENABLE_P2D,status,timer,locked,level,yInt,slope,quadratic):
     
     Return: status, timer, locked, level, yInt, slope,quadratic
     '''
-    
+    global shakeValue,shakeNumber,shakeTimer
     #Text
     push()
     background(200)
@@ -27,38 +28,44 @@ def levelSelect(ENABLE_P2D,status,timer,locked,level,yInt,slope,quadratic):
     #Level square buttons
     push()
     noStroke()
+    
     for i in range(4):
         if isMouseOverRect(displayWidth*0.2+i*displayWidth*0.2,displayHeight*0.35,displayHeight*0.15,displayHeight*0.15,30): #If mouse is over button
-            fill(100)
-            if(mousePressed):
-                if (i+1) > level: #check if level is available
-                    print("level locked")
-                else:
-                    status = "level%d" % (i+1)
+            if(timer-(10*i)) > 0:
+                fill(100)
+                if(mousePressed):
+                    if (i+1) > level: #check if level is available
+                        print("level locked")
+                        if shakeNumber != i+1:
+                            shake(i+1)
+                    else:
+                        status = "level%d" % (i+1)
         else:
             if (i+1) > level: #check if level is available
-                fill(150)
+                fill(150,float(timer-(10*i))/30*255)
             else:
-                fill(55)
-        rect(displayWidth*0.2+i*displayWidth*0.2,displayHeight*0.35,displayHeight*0.15,displayHeight*0.15,30)
+                fill(55,float(timer-(10*i))/30*255)
+        rect(displayWidth*0.2+i*displayWidth*0.2,displayHeight*0.47+(0.24*displayHeight/(0.001*(timer-(10*i))*(timer-(10*i))*(timer-(10*i))+2) - 0.12*displayHeight),displayHeight*0.15,displayHeight*0.15,30)
         fill(200)
-        text(i+1,displayWidth*0.2+i*displayWidth*0.2,displayHeight*0.39)
-    for i in range(4):
+        text(i+1,displayWidth*0.2+i*displayWidth*0.2,displayHeight*0.51+(0.24*displayHeight/(0.001*(timer-(10*i))*(timer-(10*i))*(timer-(10*i))+2) - 0.12*displayHeight))
+
         if isMouseOverRect(displayWidth*0.2+i*displayWidth*0.2,displayHeight*0.65,displayHeight*0.15,displayHeight*0.15,30): #If mouse is over button
-            fill(100)
-            if(mousePressed):
-                if (i+5) > level: #check if level is available
-                    print("level locked")
-                else:
-                    status = "level%d" % (i+5)
+            if (timer-(10*(i+4))) > 0:
+                fill(100)
+                if(mousePressed):
+                    if (i+5) > level: #check if level is available
+                        print("level locked")
+                    else:
+                        status = "level%d" % (i+5)
         else:
             if (i+5) > level: #check if level is available
-                fill(150)
+                fill(150,float(timer-(10*(i+4)))/30*255)
             else:
-                fill(55)
-        rect(displayWidth*0.2+i*displayWidth*0.2,displayHeight*0.65,displayHeight*0.15,displayHeight*0.15,30)
+                fill(55,float(timer-(10*(i+4)))/30*255)
+        rect(displayWidth*0.2+i*displayWidth*0.2,displayHeight*0.77+(0.24*displayHeight/(0.001*(timer-(10*(i+4)))*(timer-(10*(i+4)))*(timer-(10*(i+4)))+2) - 0.12*displayHeight),displayHeight*0.15,displayHeight*0.15,30)
         fill(200)
-        text(i+5,displayWidth*0.2+i*displayWidth*0.2,displayHeight*0.69)
+        text(i+5,displayWidth*0.2+i*displayWidth*0.2,displayHeight*0.81+(0.24*displayHeight/(0.001*(timer-(10*(i+4)))*(timer-(10*(i+4)))*(timer-(10*(i+4)))+2) - 0.12*displayHeight))
+
     pop()
     
     #Invert effect
@@ -90,3 +97,6 @@ def levelSelect(ENABLE_P2D,status,timer,locked,level,yInt,slope,quadratic):
                 status = "intro"
     yInt, slope,quadratic = 0, 0, 0
     return (status,timer,locked,level,yInt,slope,quadratic)
+
+def shake(level):
+    pass

@@ -37,6 +37,11 @@ def linear(yInt,slope,targetYInt,targetSlope):
     
     yInt = float("%.1f" % yInt)
     slope = float("%.1f" % slope)
+    push()
+    textSize(30)
+    fill(55)
+    text("y = %.1fx + %.1f" %(slope,yInt),displayWidth*0.75,displayHeight*0.1)
+    pop()
     
     #start coords
     if (slope*-10)+yInt < -10: #check if out of range
@@ -87,12 +92,16 @@ def parabola(yInt,slope,quadratic,targetYInt,targetSlope,targetQuadratic):
     yInt = float("%.1f" % yInt)
     slope = float("%.1f" % slope)
     quadratic = float("%.1f" % quadratic)
+    push()
+    textSize(30)
+    fill(55)
+    text("y = %.1fx^2  + %.1fx + %.1f" %(quadratic,slope,yInt),displayWidth*0.75,displayHeight*0.1)
+    pop()
     
     point1 = (-10, quadratic*100 + slope*-10 + yInt)
     point2 = (10, quadratic*100 + slope*10 + yInt)
     targetPoint1 = (-10, targetQuadratic*100 + targetSlope*-10 + targetYInt)
     targetPoint2 = (10, targetQuadratic*100 + targetSlope*10 + targetYInt)
-    print(targetPoint1,targetPoint2)
     '''
     Control point is the intersection of the two tangents. For f(x) ax^2 + bx + c, the tangent is given by 2ax + b
     f'(-10) = -20a+b. f(-10) = 100a-10b+c. Therefore the equation of the first tangent is then (-20a+b)x + (c-100a)

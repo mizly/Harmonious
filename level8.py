@@ -98,7 +98,7 @@ def level8(ENABLE_P2D,status,timer,locked, locked2,yInt, slope, quadratic,yIntLo
     pop()
     
     #Graph
-    parabola(yInt,slope,quadratic,-0.9,-0.8,-9.1)
+    parabola(yInt,slope,quadratic,-0.5,1,-8.5)
     
     #Check if correct
     if float("%.1f" % yInt) == -0.9 and float("%.1f" % slope) == -0.8 and float("%.1f" % quadratic) == -9.1:
@@ -106,6 +106,7 @@ def level8(ENABLE_P2D,status,timer,locked, locked2,yInt, slope, quadratic,yIntLo
             level = 9
             
     #Next button
+    if level>8:
         push()
         textSize(50)
         if isMouseOverRect(displayWidth/12*11,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over next button

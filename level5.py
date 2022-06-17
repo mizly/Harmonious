@@ -106,6 +106,7 @@ def level5(ENABLE_P2D,status,timer,locked, locked2,yInt, slope, quadratic,yIntLo
             level = 6
             
     #Next button
+    if level>5:
         push()
         textSize(50)
         if isMouseOverRect(displayWidth/12*11,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over next button
