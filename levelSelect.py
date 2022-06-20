@@ -1,6 +1,7 @@
 from detection import isMouseOverRect
 from com.jogamp.opengl import GLContext, GL3
 shakeValue,shakeNumber,shakeTimer = 0,0,0
+transitionValue,transitionTimer, transition = 0,0,False
 def levelSelect(ENABLE_P2D,status,timer,locked,level,yInt,slope,quadratic):
     '''
     Displays level selection screen.
@@ -16,6 +17,8 @@ def levelSelect(ENABLE_P2D,status,timer,locked,level,yInt,slope,quadratic):
     Return: status, timer, locked, level, yInt, slope,quadratic
     '''
     global shakeValue,shakeNumber,shakeTimer
+    global transitionValue,transitionTimer,transition
+    
     #Text
     push()
     background(200)
@@ -30,14 +33,15 @@ def levelSelect(ENABLE_P2D,status,timer,locked,level,yInt,slope,quadratic):
     noStroke()
     
     for i in range(4):
+        shakeValue = (shake(i+1,timer))
         if isMouseOverRect(displayWidth*0.2+i*displayWidth*0.2,displayHeight*0.35,displayHeight*0.15,displayHeight*0.15,30): #If mouse is over button
             if(timer-(10*i)) > 0:
                 fill(100)
                 if(mousePressed):
                     if (i+1) > level: #check if level is available
-                        print("level locked")
-                        if shakeNumber != i+1:
-                            shake(i+1)
+                        if shakeNumber != i+1: #shake mechanism
+                            shakeTimer = timer
+                            shakeNumber = i+1
                     else:
                         status = "level%d" % (i+1)
         else:
@@ -45,16 +49,29 @@ def levelSelect(ENABLE_P2D,status,timer,locked,level,yInt,slope,quadratic):
                 fill(150,float(timer-(10*i))/30*255)
             else:
                 fill(55,float(timer-(10*i))/30*255)
-        rect(displayWidth*0.2+i*displayWidth*0.2,displayHeight*0.47+(0.24*displayHeight/(0.001*(timer-(10*i))*(timer-(10*i))*(timer-(10*i))+2) - 0.12*displayHeight),displayHeight*0.15,displayHeight*0.15,30)
-        fill(200)
-        text(i+1,displayWidth*0.2+i*displayWidth*0.2,displayHeight*0.51+(0.24*displayHeight/(0.001*(timer-(10*i))*(timer-(10*i))*(timer-(10*i))+2) - 0.12*displayHeight))
-
+    
+        #Each square here has their translation changed instead of their position. This is because rotation is always around the origin, and translation changes the origin.
+        push()
+        pushMatrix()
+        translate(displayWidth*0.2+i*displayWidth*0.2,displayHeight*0.47+(0.24*displayHeight/(0.001*(timer-(10*i))*(timer-(10*i))*(timer-(10*i))+2) - 0.12*displayHeight))
+        if shakeNumber == i+1:
+            rotate(shakeValue)
+        rect(0,0,displayHeight*0.15,displayHeight*0.15,30)
+        fill(200,float(timer-(10*i))/30*255)
+        text(i+1,0,0+displayHeight*0.04)
+        pop()
+        popMatrix()
+        
+    for i in range(4):
+        shakeValue = (shake(i+1,timer))
         if isMouseOverRect(displayWidth*0.2+i*displayWidth*0.2,displayHeight*0.65,displayHeight*0.15,displayHeight*0.15,30): #If mouse is over button
             if (timer-(10*(i+4))) > 0:
                 fill(100)
                 if(mousePressed):
                     if (i+5) > level: #check if level is available
-                        print("level locked")
+                        if shakeNumber != i+5: #shake mechanism
+                            shakeTimer = timer
+                            shakeNumber = i+5
                     else:
                         status = "level%d" % (i+5)
         else:
@@ -62,9 +79,17 @@ def levelSelect(ENABLE_P2D,status,timer,locked,level,yInt,slope,quadratic):
                 fill(150,float(timer-(10*(i+4)))/30*255)
             else:
                 fill(55,float(timer-(10*(i+4)))/30*255)
-        rect(displayWidth*0.2+i*displayWidth*0.2,displayHeight*0.77+(0.24*displayHeight/(0.001*(timer-(10*(i+4)))*(timer-(10*(i+4)))*(timer-(10*(i+4)))+2) - 0.12*displayHeight),displayHeight*0.15,displayHeight*0.15,30)
-        fill(200)
-        text(i+5,displayWidth*0.2+i*displayWidth*0.2,displayHeight*0.81+(0.24*displayHeight/(0.001*(timer-(10*(i+4)))*(timer-(10*(i+4)))*(timer-(10*(i+4)))+2) - 0.12*displayHeight))
+                
+        push()
+        pushMatrix()
+        translate(displayWidth*0.2+i*displayWidth*0.2,displayHeight*0.77+(0.24*displayHeight/(0.001*(timer-(10*(i+4)))*(timer-(10*(i+4)))*(timer-(10*(i+4)))+2) - 0.12*displayHeight))
+        if shakeNumber == i+5:
+            rotate(shakeValue)
+        rect(0,0,displayHeight*0.15,displayHeight*0.15,30)
+        fill(200,float(timer-(10*(i+4)))/30*255)
+        text(i+5,0,0+displayHeight*0.04)
+        pop()
+        popMatrix()
 
     pop()
     
@@ -95,8 +120,60 @@ def levelSelect(ENABLE_P2D,status,timer,locked,level,yInt,slope,quadratic):
             locked = False
             if isMouseOverRect(displayWidth/12,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over back button
                 status = "intro"
+                timer = 0
     yInt, slope,quadratic = 0, 0, 0
+    
+    #Right button - transition screen to random level generator
+    push()
+    if isMouseOverRect(displayWidth*0.945, displayHeight*0.5, displayWidth*0.05,displayHeight*0.1):
+        if mousePressed and not transition:
+            transition(timer)
+        fill(150)
+    else:
+        fill(55)
+    noStroke()
+    beginShape(TRIANGLES)
+    vertex(displayWidth*0.92, displayHeight*0.45)
+    vertex(displayWidth*0.92, displayHeight*0.55)
+    vertex(displayWidth*0.97, displayHeight*0.50)
+    endShape()
+    pop()
+    
     return (status,timer,locked,level,yInt,slope,quadratic)
 
-def shake(level):
-    pass
+
+def shake(level,timer):
+    '''
+    Controls shaking animation for locked levels.
+    
+    level (int): The level number to shake
+    timer (int): frametime of the sketch
+    
+    Return: rotation amount
+    '''
+    global shakeTimer, shakeNumber
+    internalTime = timer-shakeTimer
+    if internalTime >= 30:
+        shakeTimer = 0
+        shakeNumber = 0
+        return 0
+    else:
+        #y = -x sin x for shake animation
+        x = internalTime - 30
+        return (0.3*radians(-x * sin(x)))
+    
+def transition(timer):
+    '''
+    Controls translation animation into random level generator.
+    
+    timer (int): frametime of the sketch
+    
+    Return: translation amount
+    '''
+    global transitionTimer, translation
+    internalTime = timer-transitionTimer
+        if internalTime >= 30:
+            translation = False
+            return 0
+        else:
+            return internalTime*10

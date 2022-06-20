@@ -20,6 +20,7 @@ def intro(ENABLE_P2D, spacing, status, timer, yOffset, yOffset2, yOffset3, yOffs
     if timer > 0:
         if timer <= 60:
             spacing = ((timer-60)*(timer-60)*(timer-60)*(timer-60)*0.00000848765+90) #Quartic function to ease spacing animation
+            yOffset = 0
         else:
             spacing = 90
     if timer > 60:
