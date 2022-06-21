@@ -4,6 +4,7 @@ from options import options
 from credit import credit
 from levelSelect import levelSelect
 from detection import isMouseOverRect
+from randomlevel import randomlevel
 
 for i in range(8):
     exec("from level%s import level%s" % (str(i+1),str(i+1)))
@@ -43,7 +44,7 @@ def setup():
     global level
     global yInt,slope, quadratic
     global yIntLocked,slopeLocked, quadraticLocked
-    status, spacing, timer = "intro", 200, 0
+    status, spacing, timer = "levelselect", 200, 0
     yOffset, yOffset2, yOffset3, yOffset4 = 0,0,0,0
     volMaster,volMusic,volFX, masterLocked,musicLocked,FXLocked = 100,100,100,False,False,False
     locked,locked2 = False,False
@@ -73,6 +74,8 @@ def draw():
         status, volMaster,volMusic,volFX,masterLocked,musicLocked,FXLocked,locked = options(ENABLE_P2D,status, volMaster,volMusic,volFX,masterLocked,musicLocked,FXLocked,locked)
     if status == "credit": #Credit screen
         status, timer,locked = credit(ENABLE_P2D,status, timer,locked)
+    if status == "random": #Random level generator screen
+        status, timer,locked = randomlevel(ENABLE_P2D,status, timer,locked)
     
     #Levels
     if status in ["level1","level2","level3","level4"]:

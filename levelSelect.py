@@ -1,7 +1,7 @@
 from detection import isMouseOverRect
 from com.jogamp.opengl import GLContext, GL3
 shakeValue,shakeNumber,shakeTimer = 0,0,0
-transitionValue,transitionTimer, transition = 0,0,False
+transitionValue,transitionTimer, transitionBool = 0,0,False
 def levelSelect(ENABLE_P2D,status,timer,locked,level,yInt,slope,quadratic):
     '''
     Displays level selection screen.
@@ -13,15 +13,39 @@ def levelSelect(ENABLE_P2D,status,timer,locked,level,yInt,slope,quadratic):
     level (int): The highest level that is available.
     yInt (int|float): Y-intercept of graphs.
     slope (int|float): Slope of graphs.
+    quadratic (int|float): Quadratic coefficient of graphs.
     
     Return: status, timer, locked, level, yInt, slope,quadratic
     '''
     global shakeValue,shakeNumber,shakeTimer
-    global transitionValue,transitionTimer,transition
+    global transitionValue,transitionTimer,transitionBool
     
+    push()
+    noStroke()
+    background(200)
+    pushMatrix()
+    #Right button - transition screen to random level generator
+    if isMouseOverRect(displayWidth*0.5, displayHeight*0.845, displayWidth*0.06,displayHeight*0.05):
+        if mousePressed and not transitionBool:
+            transitionBool = True
+            transitionTimer = timer
+        if transitionBool:
+            transitionValue = transition(timer)
+        fill(150)
+    else:
+        fill(55)
+    translate(0,transitionValue)
+    noStroke()
+    beginShape(TRIANGLES)
+    vertex(displayWidth*0.47, displayHeight*0.82)
+    vertex(displayWidth*0.53, displayHeight*0.82)
+    vertex(displayWidth*0.50, displayHeight*0.87)
+    endShape()
+    if timer-transitionTimer >= 30 and transitionBool:
+        transitionValue,transitionTimer, transitionBool = 0,0,False
+        status = "random"
     #Text
     push()
-    background(200)
     fill(55)
     textSize(50)
     textAlign(LEFT)
@@ -95,11 +119,12 @@ def levelSelect(ENABLE_P2D,status,timer,locked,level,yInt,slope,quadratic):
     
     #Invert effect
     push()
+    noStroke()
     fill(255)
     blendMode(DIFFERENCE)
     if ENABLE_P2D:
         GLContext.getCurrentGL().getGL3().glBlendFunc(GL3.GL_ONE_MINUS_DST_COLOR, GL3.GL_ZERO)
-    rect(displayWidth/4,displayHeight/2,displayWidth/2,displayHeight)
+    rect(displayWidth/4,displayHeight/2,displayWidth/2,displayHeight*4)
     pop()
     
     #Back button
@@ -122,23 +147,9 @@ def levelSelect(ENABLE_P2D,status,timer,locked,level,yInt,slope,quadratic):
                 status = "intro"
                 timer = 0
     yInt, slope,quadratic = 0, 0, 0
-    
-    #Right button - transition screen to random level generator
-    push()
-    if isMouseOverRect(displayWidth*0.945, displayHeight*0.5, displayWidth*0.05,displayHeight*0.1):
-        if mousePressed and not transition:
-            transition(timer)
-        fill(150)
-    else:
-        fill(55)
-    noStroke()
-    beginShape(TRIANGLES)
-    vertex(displayWidth*0.92, displayHeight*0.45)
-    vertex(displayWidth*0.92, displayHeight*0.55)
-    vertex(displayWidth*0.97, displayHeight*0.50)
-    endShape()
     pop()
-    
+    popMatrix()
+    rect(displayWidth/2,displayHeight*2,displayWidth,displayHeight)
     return (status,timer,locked,level,yInt,slope,quadratic)
 
 
@@ -170,10 +181,10 @@ def transition(timer):
     
     Return: translation amount
     '''
-    global transitionTimer, translation
+    global transitionTimer, transitionBool
     internalTime = timer-transitionTimer
-        if internalTime >= 30:
-            translation = False
-            return 0
-        else:
-            return internalTime*10
+    if internalTime >= 30:
+        return 0
+    else:
+        t = float(internalTime)/65
+        return -2400*(3*(1-t)*(1-t)*t) + (3*(1-t)*t*t) + (t*t*t) #bezier cuve

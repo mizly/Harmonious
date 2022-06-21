@@ -52,6 +52,7 @@ def options(ENABLE_P2D, status, volMaster, volMusic, volFX, masterLocked, musicL
     
     #Invert effect
     push()
+    noStroke()
     fill(255)
     blendMode(DIFFERENCE)
     if ENABLE_P2D:

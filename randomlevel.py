@@ -1,7 +1,7 @@
 from detection import isMouseOverRect
 from com.jogamp.opengl import GLContext, GL3
 
-def credit(ENABLE_P2D,status,timer,locked):
+def randomlevel(ENABLE_P2D,status,timer,locked):
     '''
     Displays the credit screen.
     
@@ -15,15 +15,11 @@ def credit(ENABLE_P2D,status,timer,locked):
     
     #Text
     push()
-    noStroke()
     background(200)
     fill(55)
     textSize(50)
-    textAlign(LEFT)
-    text("Credits", displayWidth/6, displayHeight/6)
-    textSize(30)
-    text("Game and Music: Vu Cao\nHelp with animation: Feng-Xiang Ming",displayWidth/8, displayHeight/3)
-    text("Made with Processing.py", displayWidth/1.6, displayHeight/3)
+    textAlign(CENTER)
+    text("Random Level Generator", displayWidth/2, displayHeight/4)
     pop()
     
     #Invert effect
@@ -53,7 +49,7 @@ def credit(ENABLE_P2D,status,timer,locked):
         if not mousePressed:
             locked = False
             if isMouseOverRect(displayWidth/12,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over back button
-                status = "intro"
+                status = "levelselect"
 
     return (status,timer,locked)
     

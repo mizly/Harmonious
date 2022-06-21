@@ -108,6 +108,7 @@ def level3(ENABLE_P2D,status,timer,locked, locked2,yInt, slope, yIntLocked,slope
     
     #Invert effect
     push()
+    noStroke()
     fill(255)
     blendMode(DIFFERENCE)
     if ENABLE_P2D:

@@ -46,6 +46,7 @@ def intro(ENABLE_P2D, spacing, status, timer, yOffset, yOffset2, yOffset3, yOffs
 
             
     push()
+    noStroke()
     background(200)
     fill(55)
     textList = [char for char in "Harmonious"]
@@ -55,6 +56,7 @@ def intro(ENABLE_P2D, spacing, status, timer, yOffset, yOffset2, yOffset3, yOffs
     
     #Invert effect
     push()
+    noStroke()
     fill(255)
     blendMode(DIFFERENCE)
     if ENABLE_P2D:

@@ -94,6 +94,7 @@ def level1(ENABLE_P2D,status,timer,locked, locked2,yInt, slope, yIntLocked,slope
     #Invert effect
     push()
     fill(255)
+    noStroke()
     blendMode(DIFFERENCE)
     if ENABLE_P2D:
         GLContext.getCurrentGL().getGL3().glBlendFunc(GL3.GL_ONE_MINUS_DST_COLOR, GL3.GL_ZERO)
