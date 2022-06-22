@@ -44,7 +44,7 @@ def setup():
     global level
     global yInt,slope, quadratic
     global yIntLocked,slopeLocked, quadraticLocked
-    status, spacing, timer = "levelselect", 200, 0
+    status, spacing, timer = "random", 200, 0
     yOffset, yOffset2, yOffset3, yOffset4 = 0,0,0,0
     volMaster,volMusic,volFX, masterLocked,musicLocked,FXLocked = 100,100,100,False,False,False
     locked,locked2 = False,False

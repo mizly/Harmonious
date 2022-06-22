@@ -24,29 +24,32 @@ def levelSelect(ENABLE_P2D,status,timer,locked,level,yInt,slope,quadratic):
     noStroke()
     background(200)
     pushMatrix()
-    #Right button - transition screen to random level generator
+    
+    #Down button - transition screen to random level generator
     if isMouseOverRect(displayWidth*0.5, displayHeight*0.845, displayWidth*0.06,displayHeight*0.05):
-        if mousePressed and not transitionBool:
+        if mousePressed and not transitionBool: #check if transition can be done
             transitionBool = True
             transitionTimer = timer
         if transitionBool:
             transitionValue = transition(timer)
-        fill(150)
+        fill(150,float(timer-(80))/30*255)
     else:
-        fill(55)
+        fill(55,float(timer-(80))/30*255)
     translate(0,transitionValue)
     noStroke()
-    beginShape(TRIANGLES)
+    beginShape(TRIANGLES) #drawing the triangle
     vertex(displayWidth*0.47, displayHeight*0.82)
     vertex(displayWidth*0.53, displayHeight*0.82)
     vertex(displayWidth*0.50, displayHeight*0.87)
     endShape()
     if timer-transitionTimer >= 30 and transitionBool:
         transitionValue,transitionTimer, transitionBool = 0,0,False
+        timer = 0
         status = "random"
+        
     #Text
     push()
-    fill(55)
+    fill(55,float(timer-(10))/30*255)
     textSize(50)
     textAlign(LEFT)
     text("Level Select", displayWidth/6, displayHeight/6)
@@ -134,9 +137,9 @@ def levelSelect(ENABLE_P2D,status,timer,locked,level,yInt,slope,quadratic):
     if isMouseOverRect(displayWidth/12,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over back button
         if mousePressed: #lock mouse
             locked = True
-        fill(255)
+        fill(255,float(timer-(10))/30*255)
     else:
-        fill(200)
+        fill(200,float(timer-(10))/30*255)
     text("Back",displayWidth/12,displayHeight/12)
     pop()
     

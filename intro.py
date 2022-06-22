@@ -48,7 +48,7 @@ def intro(ENABLE_P2D, spacing, status, timer, yOffset, yOffset2, yOffset3, yOffs
     push()
     noStroke()
     background(200)
-    fill(55)
+    fill(55,float(timer-(0))/30*255)
     textList = [char for char in "Harmonious"]
     for i in range(len(textList)):
         text(textList[i], displayWidth/2 + (i-4.5)*spacing, displayHeight/2+yOffset)
