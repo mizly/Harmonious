@@ -101,7 +101,7 @@ def level7(ENABLE_P2D,status,timer,locked, locked2,yInt, slope, quadratic,yIntLo
     parabola(yInt,slope,quadratic,4,-9,-3)
     
     #Check if correct
-    if float("%.1f" % yInt) == 4.2 and float("%.1f" % slope) == -8.9 and float("%.1f" % quadratic) == -2.8:
+    if float("%.1f" % yInt) == 4 and float("%.1f" % slope) == -9 and float("%.1f" % quadratic) == -3:
         if level < 8:
             level = 8
             

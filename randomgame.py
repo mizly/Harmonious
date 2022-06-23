@@ -1,9 +1,9 @@
 from detection import isMouseOverRect, isMouseOverCircle
 from graph import drawGrid,parabola
 from com.jogamp.opengl import GLContext, GL3
-def level8(ENABLE_P2D,status,timer,locked, locked2,yInt, slope, quadratic,yIntLocked,slopeLocked, quadraticLocked, level): 
+def randomgame(ENABLE_P2D,status,timer,locked, locked2,yInt, slope, quadratic,yIntLocked,slopeLocked, quadraticLocked, level,yIntValue,slopeValue,quadraticValue): 
     '''
-    Displays level 8.
+    Displays random level.
     
     ENABLE_P2D (bool): Uses OpenGL rendering if True.
     status (str): Status of the sketch.
@@ -17,6 +17,9 @@ def level8(ENABLE_P2D,status,timer,locked, locked2,yInt, slope, quadratic,yIntLo
     slopeLocked (bool): Check if slope slider is locked on.
     quadraticLocked (bool): Check if quadratic slider is locked on.
     level (int): Current highest level
+    yIntValue (float): Y-Int value being passed from random level generator.
+    slopeValue (float): Slope value being passed from random level generator.
+    quadraticValue (float): Quadratic value being passed from random level generator.
     
     Return: status, timer, locked, locked2, yInt, slope, quadratic, yIntLocked, slopeLocked, quadraticLocked, level
     '''
@@ -27,7 +30,7 @@ def level8(ENABLE_P2D,status,timer,locked, locked2,yInt, slope, quadratic,yIntLo
     fill(55)
     textSize(50)
     textAlign(LEFT)
-    text("Level 8", displayWidth/6, displayHeight/6)
+    text("Random Level", displayWidth/6, displayHeight/6)
     pop()
     
     #Sliderbars
@@ -98,15 +101,16 @@ def level8(ENABLE_P2D,status,timer,locked, locked2,yInt, slope, quadratic,yIntLo
     pop()
     
     #Graph
-    parabola(yInt,slope,quadratic,-0.5,1,-8.5)
+    parabola(yInt,slope,quadratic,yIntValue,slopeValue,quadraticValue)
     
     #Check if correct
-    if float("%.1f" % yInt) == -0.5 and float("%.1f" % slope) == 1 and float("%.1f" % quadratic) == -8.5:
-        if level < 9:
-            level = 9
+    if float("%.1f" % yInt) == yIntValue and float("%.1f" % slope) == slopeValue and float("%.1f" % quadratic) == quadraticValue:
+        level = 10
+    else:
+        level = 9
             
     #Next button
-    if level>8:
+    if level>9:
         push()
         textSize(50)
         if isMouseOverRect(displayWidth/12*11,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over next button
@@ -122,7 +126,7 @@ def level8(ENABLE_P2D,status,timer,locked, locked2,yInt, slope, quadratic,yIntLo
             if not mousePressed:
                 locked = False
                 if isMouseOverRect(displayWidth/12*11,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over next button
-                    status = "levelselect"
+                    status = "random"
                     yInt, slope,quadratic = 0,0,0
     
     #Invert effect
@@ -155,6 +159,6 @@ def level8(ENABLE_P2D,status,timer,locked, locked2,yInt, slope, quadratic,yIntLo
         if not mousePressed:
             locked2 = False
             if isMouseOverRect(displayWidth/12,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over back button
-                status = "levelselect"
+                status = "random"
     
     return (status,timer,locked,locked2,yInt,slope,quadratic,yIntLocked,slopeLocked,quadraticLocked, level)

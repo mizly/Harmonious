@@ -1,8 +1,9 @@
 from detection import isMouseOverRect
 from com.jogamp.opengl import GLContext, GL3
+import random
 transitionValue,transitionTimer, transitionBool = 0,0,False
 checkboxes = [True,True,True]
-def randomlevel(ENABLE_P2D,status,timer,locked):
+def randomlevel(ENABLE_P2D,status,timer,locked,yIntValue,slopeValue,quadraticValue):
     '''
     Displays the credit screen.
     
@@ -10,12 +11,14 @@ def randomlevel(ENABLE_P2D,status,timer,locked):
     status (str): Status of the sketch.
     timer (int): How many frames have passed since the sketch started.
     locked (bool): Checks if back button's mouse press is locked.
+    yIntValue (float): Y-Int value being passed from random level generator.
+    slopeValue (float): Slope value being passed from random level generator.
+    quadraticValue (float): Quadratic value being passed from random level generator.
     
-    Return: status, timer, locked
+    Return: status, timer, locked, yIntValue, slopeValue, quadraticValue
     '''
     global transitionValue,transitionTimer,transitionBool
-    global yInt,slope,quadratic
-    
+    push()
     background(200)
     #Down button - transition screen to random level generator
     if isMouseOverRect(displayWidth*0.5, displayHeight*0.155, displayWidth*0.06,displayHeight*0.05):
@@ -48,30 +51,25 @@ def randomlevel(ENABLE_P2D,status,timer,locked):
     i = 0
     text("Random Level Generator", displayWidth/2, displayHeight*0.37+(0.24*displayHeight/(0.001*(timer-(10*i))*(timer-(10*i))*(timer-(10*i))+2) - 0.12*displayHeight))
     pop()
-                
-    #Text for different variables
-    push()
-    textSize(50)
-    textAlign(RIGHT)
-    fill(55)
-    text("Y Intercept", displayWidth*0.45,displayHeight*0.415)
-    text("Slope", displayWidth*0.45,displayHeight*0.515)
-    text("Quadratic", displayWidth*0.45,displayHeight*0.615)
-    pop()
     
-    #checkboxes
+    #Text and checkboxes
     push()
-    stroke(55)
     for i in range(3):
+        textboxes = ["Y Intercept","Slope","Quadratic"]
         if checkboxes[i]:
             fill(100,float(timer-(10*(i+2)))/30*255)
         else:
             noFill()
-        if isMouseOverRect(displayWidth*0.55,displayHeight*(0.4+i*0.1),displayHeight*0.07,displayHeight*0.07):
+        if isMouseOverRect(displayWidth*0.55,displayHeight*(0.4+i*0.1)+(0.24*displayHeight/(0.001*(timer-(10*(i+2)))*(timer-(10*(i+2)))*(timer-(10*(i+2)))+2) - 0.12*displayHeight)+0.12*displayHeight,displayHeight*0.07,displayHeight*0.07):
             if mousePressed: #lock mouse
                 locked = True
-            fill(150)
+            fill(150,float(timer-(10*(i+2)))/30*255)
+        stroke(55,float(timer-(10*(i+2)))/30*255)
         rect(displayWidth*0.55,displayHeight*(0.4+i*0.1)+(0.24*displayHeight/(0.001*(timer-(10*(i+2)))*(timer-(10*(i+2)))*(timer-(10*(i+2)))+2) - 0.12*displayHeight)+0.12*displayHeight,displayHeight*0.07,displayHeight*0.07)
+        textSize(50)
+        textAlign(RIGHT)
+        fill(55,float(timer-(10*(i+2)))/30*255)
+        text(textboxes[i], displayWidth*0.45,displayHeight*(0.415+0.1*i)+(0.24*displayHeight/(0.001*(timer-(10*(i+2)))*(timer-(10*(i+2)))*(timer-(10*(i+2)))+2) - 0.12*displayHeight)+0.12*displayHeight)
         
     if locked: #unlock mouse
         if not mousePressed:
@@ -93,21 +91,37 @@ def randomlevel(ENABLE_P2D,status,timer,locked):
 
     #Generate button
     push()
+    i=2
     textSize(50)
     textAlign(CENTER)
     if(not isMouseOverRect(displayWidth/2,displayHeight/2+ 0.285*displayHeight, displayWidth/6, displayHeight/10, 28)):
-        fill(255)
+        fill(255,float(timer-(10*(i+2)))/30*255)
     else:
-        if(mousePressed):
+        if(mousePressed): #generating random values
+            if checkboxes[0]:
+                yIntValue = float("%.1f" % random.randrange(-100,100))*0.1
+            else:
+                yIntValue = 0
+                
+            if checkboxes[1]:
+                slopeValue = float("%.1f" % random.randrange(-100,100))*0.1
+            else:
+                slopeValue = 0
+                
+            if checkboxes[2]:
+                quadraticValue = float("%.1f" % random.randrange(-100,100))*0.1
+            else:
+                quadraticValue = 0
+            
             status = "randomgame"
-        fill(180)
-    stroke(0)
-    rect(displayWidth/2,displayHeight/2+0.285*displayHeight, displayWidth/6, displayHeight/10, 28);
-    fill(55)
-    text("Generate!", displayWidth*0.5,displayHeight*0.8)
+        fill(180,float(timer-(10*(i+2)))/30*255)
+    stroke(0,float(timer-(10*(i+2)))/30*255)
+    rect(displayWidth/2,displayHeight/2+0.285*displayHeight+(0.24*displayHeight/(0.001*(timer-(10*(i+2)))*(timer-(10*(i+2)))*(timer-(10*(i+2)))+2) - 0.12*displayHeight)+0.12*displayHeight, displayWidth/6, displayHeight/10, 28);
+    fill(55,float(timer-(10*(i+2)))/30*255)
+    text("Generate!", displayWidth*0.5,displayHeight*0.8+(0.24*displayHeight/(0.001*(timer-(10*(i+2)))*(timer-(10*(i+2)))*(timer-(10*(i+2)))+2) - 0.12*displayHeight)+0.12*displayHeight)
     pop()
-    
-    return (status,timer,locked)
+    pop()
+    return (status,timer,locked,yIntValue,slopeValue,quadraticValue)
     
 def transition(timer):
     '''
@@ -123,4 +137,4 @@ def transition(timer):
         return 0
     else:
         t = float(internalTime)/65
-        return 2400*(3*(1-t)*(1-t)*t) + (3*(1-t)*t*t) + (t*t*t) #bezier cuve
+        return displayHeight*2.5*(3*(1-t)*(1-t)*t) + (3*(1-t)*t*t) + (t*t*t) #bezier curve

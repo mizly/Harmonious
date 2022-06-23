@@ -1,7 +1,7 @@
 from detection import isMouseOverRect
 from com.jogamp.opengl import GLContext, GL3
-
-def intro(ENABLE_P2D, spacing, status, timer, yOffset, yOffset2, yOffset3, yOffset4):
+yOffset,yOffset2,yOffset3,yOffset4,spacing = 0,0,0,0,0
+def intro(ENABLE_P2D, status, timer):
     '''
     Displays the intro screen.
     
@@ -16,7 +16,7 @@ def intro(ENABLE_P2D, spacing, status, timer, yOffset, yOffset2, yOffset3, yOffs
     
     Return: spacing, status, timer, yOffset, yOffset2, yOffset3, yOffset4
     '''
-
+    global yOffset,yOffset2,yOffset3,yOffset4,spacing
     if timer > 0:
         if timer <= 60:
             spacing = ((timer-60)*(timer-60)*(timer-60)*(timer-60)*0.00000848765+90) #Quartic function to ease spacing animation
@@ -94,17 +94,18 @@ def intro(ENABLE_P2D, spacing, status, timer, yOffset, yOffset2, yOffset3, yOffs
     fill(0,float(timer-120)/30*255)
     text("Options",displayWidth/2,displayHeight/1.93+yOffset3 + 0.23*displayHeight)
     
-    # Credits button
+    # Instruction button
     if(not isMouseOverRect(displayWidth/2,displayHeight/2+yOffset4+ 0.36*displayHeight, displayWidth/6, displayHeight/10, 28)):
         fill(255,float(timer-150)/30*255) #Opacity is the 2nd parameter, takes the frames between 150 and 180 and uses that
     else:
         if(mousePressed):
-            status = "credit"
+            status = "instruction"
         fill(180,float(timer-150)/30*255) #Opacity is the 2nd parameter, takes the frames between 150 and 180 and uses that
     stroke(0,float(timer-150)/30*255)
     rect(displayWidth/2,displayHeight/2+yOffset4+ 0.36*displayHeight, displayWidth/6, displayHeight/10, 28);
     fill(0,float(timer-150)/30*255)
-    text("Credits",displayWidth/2,displayHeight/1.93+yOffset4 + 0.36*displayHeight)
+    textSize(40)
+    text("Instruction",displayWidth/2,displayHeight/1.93+yOffset4 + 0.35*displayHeight)
     pop()
     
     #Quit button
@@ -120,4 +121,4 @@ def intro(ENABLE_P2D, spacing, status, timer, yOffset, yOffset2, yOffset3, yOffs
     line(displayWidth*0.93, displayHeight*0.05+displayWidth*0.02,displayWidth*0.95,displayHeight*0.05)
     pop()
     
-    return(spacing, status, timer, yOffset, yOffset2, yOffset3, yOffset4)
+    return(status, timer)

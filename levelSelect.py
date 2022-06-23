@@ -26,26 +26,27 @@ def levelSelect(ENABLE_P2D,status,timer,locked,level,yInt,slope,quadratic):
     pushMatrix()
     
     #Down button - transition screen to random level generator
-    if isMouseOverRect(displayWidth*0.5, displayHeight*0.845, displayWidth*0.06,displayHeight*0.05):
-        if mousePressed and not transitionBool: #check if transition can be done
-            transitionBool = True
-            transitionTimer = timer
-        if transitionBool:
-            transitionValue = transition(timer)
-        fill(150,float(timer-(80))/30*255)
-    else:
-        fill(55,float(timer-(80))/30*255)
-    translate(0,transitionValue)
-    noStroke()
-    beginShape(TRIANGLES) #drawing the triangle
-    vertex(displayWidth*0.47, displayHeight*0.82)
-    vertex(displayWidth*0.53, displayHeight*0.82)
-    vertex(displayWidth*0.50, displayHeight*0.87)
-    endShape()
-    if timer-transitionTimer >= 30 and transitionBool:
-        transitionValue,transitionTimer, transitionBool = 0,0,False
-        timer = 0
-        status = "random"
+    if level>8:
+        if isMouseOverRect(displayWidth*0.5, displayHeight*0.845, displayWidth*0.06,displayHeight*0.05):
+            if mousePressed and not transitionBool: #check if transition can be done
+                transitionBool = True
+                transitionTimer = timer
+            if transitionBool:
+                transitionValue = transition(timer)
+            fill(150,float(timer-(80))/30*255)
+        else:
+            fill(55,float(timer-(80))/30*255)
+        translate(0,transitionValue)
+        noStroke()
+        beginShape(TRIANGLES) #drawing the triangle
+        vertex(displayWidth*0.47, displayHeight*0.82)
+        vertex(displayWidth*0.53, displayHeight*0.82)
+        vertex(displayWidth*0.50, displayHeight*0.87)
+        endShape()
+        if timer-transitionTimer >= 30 and transitionBool:
+            transitionValue,transitionTimer, transitionBool = 0,0,False
+            timer = 0
+            status = "random"
         
     #Text
     push()
@@ -190,4 +191,4 @@ def transition(timer):
         return 0
     else:
         t = float(internalTime)/65
-        return -2400*(3*(1-t)*(1-t)*t) + (3*(1-t)*t*t) + (t*t*t) #bezier cuve
+        return -displayHeight*2.5*(3*(1-t)*(1-t)*t) + (3*(1-t)*t*t) + (t*t*t) #bezier cuve
