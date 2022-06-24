@@ -57,22 +57,21 @@ This isn't a bug but a built-in feature of Processing that has no way to be turn
 <details>
 <summary>Games are hard. So you can find the solutions here!</summary>
 <br> 
-Level 1: 1  
-<br>
-Level 2: -2
-  <br>
-Level 3: 1, 1  
-  <br>
-Level 4: 3, -0.5  
-  <br>
-Level 5: 1, 0, 1  
-  <br>
-Level 6: -5, 9, 9  
-  <br>
-Level 7: 4, -9, -3  
-  <br>
-Level 8: -0.5, 1, -8.5  
-  <br>
+Level 1: 1   
+
+Level 2: -2  
+
+Level 3: 1, 1
+
+Level 4: 3, -0.5
+
+Level 5: 1, 0, 1
+
+Level 6: -5, 9, 9
+
+Level 7: 4, -9, -3
+
+Level 8: -0.5, 1, -8.5
 
 You're on your own for the random level. I probably don't know the answers either.
 </details>
@@ -84,7 +83,7 @@ Get in touch with me at Mizly#1738 on Discord for support or bug reports.
 [MIT](https://choosealicense.com/licenses/mit/)
 
 ## Sources
-This project would not be possible without the following sources:
+This project would not be possible without the following:
 
 [Processing reference](https://processing.org/reference/) - A general official wiki for everything Processing related. I used this extensively as Processing had lots of functions and methods that I would not be able to figure out otherwise.
 
@@ -92,7 +91,13 @@ This project would not be possible without the following sources:
 
 [Stack Overflow (again)](https://stackoverflow.com/questions/68986409/inverting-colors-within-shape-in-processing) - Helped me figure out the invert colour effect using ```blendMode(DIFFERENCE)```, which applies the effect on an area defined by a shape.
 
-[Processing Foundation Discourse](https://discourse.processing.org/t/blendmode-difference-in-p2d-p3d/17541) - Invert colour similarly to ```blendMode(DIFFERENCE)``` using P2D/P3D, an OpenGL powered graphics engine which could provide better performance.
+[Processing Foundation Discourse](https://discourse.processing.org/t/blendmode-difference-in-p2d-p3d/17541) - Helped me figure out how to invert colour similarly to ```blendMode(DIFFERENCE)``` using P2D/P3D, an OpenGL powered graphics engine which could provide better performance.
+
+[DelftStack](https://www.delftstack.com/howto/python/python-call-function-from-a-string/#:~:text=call%20the%20function.-,Use%20locals()%20and%20globals()%20to%20Call%20a%20Function,of%20the%20given%20source%20code.) - Helped me figure out how to call a function from a string name, which was useful as I had lots of repetitive function names like ```level1, level2, level3```, etc...
+
+[Florida State University](https://www.math.fsu.edu/~rabert/TeX/parabola/parabola.html), [Math Stack Exchange](https://math.stackexchange.com/questions/3029005/drawing-bezier-curve-from-a-parabola) - Helped me figure out how to graph a degree 2 (parabola) polynomial equations using a bezier curve, which was necessary for the game to function properly.
+
+Last but not least, big thanks to [Xiang](https://github.com/Rifltz) for helping me with some of the animations and giving valuable feedback!
 
 
 
