@@ -48,7 +48,7 @@ def setup():
     status, timer = "intro", 0
     volMaster,volMusic,volFX, masterLocked,musicLocked,FXLocked = 100,100,100,False,False,False
     locked,locked2 = False,False
-    level = 9
+    level = 1
     yInt,slope,quadratic = 0,0,0
     yIntLocked,slopeLocked,quadraticLocked = False,False,False
     yIntValue,slopeValue,quadraticValue = 0,0,0
