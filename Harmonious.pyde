@@ -31,10 +31,10 @@ def setup():
     smooth(8)
 
     #loading font
-    cartograph = createFont("CartographCF-ExtraLight.ttf",displayWidth/15)
+    mainFont = createFont("Consolas",displayWidth/15)
     textAlign(CENTER)
     rectMode(CENTER)
-    textFont(cartograph)
+    textFont(mainFont)
     
     #Iinitializing global variables
     global status, timer
