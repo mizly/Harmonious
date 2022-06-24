@@ -58,13 +58,21 @@ This isn't a bug but a built-in feature of Processing that has no way to be turn
 <summary>Games are hard. So you can find the solutions here!</summary>
 <br> 
 Level 1: 1  
-Level 2: -2  
+<br>
+Level 2: -2
+  <br>
 Level 3: 1, 1  
+  <br>
 Level 4: 3, -0.5  
+  <br>
 Level 5: 1, 0, 1  
+  <br>
 Level 6: -5, 9, 9  
+  <br>
 Level 7: 4, -9, -3  
+  <br>
 Level 8: -0.5, 1, -8.5  
+  <br>
 
 You're on your own for the random level. I probably don't know the answers either.
 </details>
