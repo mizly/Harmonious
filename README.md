@@ -58,7 +58,7 @@ This isn't a bug but a built-in feature of Processing that has no way to be turn
 <summary>Games are hard. So you can find the solutions here!</summary>
 <br> 
 Level 1: 1   
-
+<br>
 Level 2: -2  
 
 Level 3: 1, 1
