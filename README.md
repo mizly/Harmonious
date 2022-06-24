@@ -22,11 +22,7 @@ Bored of the default levels? Create your own with customizable parameters!
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
-
-```bash
-pip install foobar
-```
+Head over to [releases](https://github.com/mizly/Harmonious/releases) and install the latest version with the instructions provided there.
 
 ## Usage
 
