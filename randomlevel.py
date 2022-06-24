@@ -92,7 +92,7 @@ def randomlevel(ENABLE_P2D,status,timer,locked,yIntValue,slopeValue,quadraticVal
     #Generate button
     push()
     i=2
-    textSize(50)
+    textSize(40)
     textAlign(CENTER)
     if(not isMouseOverRect(displayWidth/2,displayHeight/2+ 0.285*displayHeight, displayWidth/6, displayHeight/10, 28)):
         fill(255,float(timer-(10*(i+2)))/30*255)

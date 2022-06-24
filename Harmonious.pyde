@@ -6,9 +6,9 @@ from levelSelect import levelSelect
 from detection import isMouseOverRect
 from randomlevel import randomlevel
 from randomgame import randomgame
+
 for i in range(8):
     exec("from level%s import level%s" % (str(i+1),str(i+1)))
-
 
 ENABLE_P2D = False
 
@@ -44,6 +44,7 @@ def setup():
     global yInt,slope, quadratic
     global yIntLocked,slopeLocked, quadraticLocked
     global yIntValue,slopeValue,quadraticValue
+    
     status, timer = "intro", 0
     volMaster,volMusic,volFX, masterLocked,musicLocked,FXLocked = 100,100,100,False,False,False
     locked,locked2 = False,False
@@ -71,7 +72,7 @@ def draw():
     if status == "intro": #Title screen
         status, timer = intro(ENABLE_P2D, status, timer)
     if status == "options": #Options screen
-        status, volMaster,volMusic,volFX,masterLocked,musicLocked,FXLocked,locked = options(ENABLE_P2D,status, volMaster,volMusic,volFX,masterLocked,musicLocked,FXLocked,locked)
+        status, timer, volMaster,volMusic,volFX,masterLocked,musicLocked,FXLocked,locked = options(ENABLE_P2D,status, timer, volMaster,volMusic,volFX,masterLocked,musicLocked,FXLocked,locked)
     if status == "instruction": #Credit screen
         status, timer,locked = instruction(ENABLE_P2D,status, timer,locked)
     if status == "random": #Random level generator screen

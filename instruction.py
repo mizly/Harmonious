@@ -17,13 +17,18 @@ def instruction(ENABLE_P2D,status,timer,locked):
     push()
     noStroke()
     background(200)
-    fill(55)
+    fill(55,float(timer-(10))/30*255)
     textSize(50)
     textAlign(LEFT)
-    text("Credits", displayWidth/6, displayHeight/6)
+    text("Instructions", displayWidth/6, displayHeight/6)
     textSize(30)
-    text("Game and Music: Vu Cao\nHelp with animation: Feng-Xiang Ming",displayWidth/8, displayHeight/3)
-    text("Made with Processing.py", displayWidth/1.6, displayHeight/3)
+    i = 1
+    fill(55,float(timer-(10*i))/30*255)
+    text("Control sliders with your mouse\nto control parameters.\n\nUse left and right arrow\nkeys to get finer adjustments.",displayWidth*0.1, displayHeight/3+(0.24*displayHeight/(0.001*(timer-(10*i))*(timer-(10*i))*(timer-(10*i))+2) - 0.12*displayHeight)+0.12*displayHeight)
+    textAlign(RIGHT)
+    i = 4
+    fill(55,float(timer-(10*i))/30*255)
+    text("Eliminate impurities by\noverlaying the two functions.\n\nDoing so perfectly will\nunlock new levels.\n\nAfter finishing the main levels\nyou can generate a random one!", displayWidth*0.9, displayHeight/3+(0.24*displayHeight/(0.001*(timer-(10*i))*(timer-(10*i))*(timer-(10*i))+2) - 0.12*displayHeight)+0.12*displayHeight)
     pop()
     
     #Invert effect
@@ -43,9 +48,9 @@ def instruction(ENABLE_P2D,status,timer,locked):
     if isMouseOverRect(displayWidth/12,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over back button
         if mousePressed: #lock mouse
             locked = True
-        fill(255)
+        fill(255,float(timer-(10))/30*255)
     else:
-        fill(200)
+        fill(200,float(timer-(10))/30*255)
     text("Back",displayWidth/12,displayHeight/12)
     pop()
     

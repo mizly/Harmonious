@@ -87,6 +87,7 @@ def intro(ENABLE_P2D, status, timer):
         fill(255,float(timer-120)/30*255) #Opacity is the 2nd parameter, takes the frames between 120 and 150 and uses that
     else:
         if(mousePressed):
+            timer = 0
             status = "options"
         fill(180,float(timer-120)/30*255) #Opacity is the 2nd parameter, takes the frames between 120 and 150 and uses that
     stroke(0,float(timer-120)/30*255)
@@ -99,13 +100,14 @@ def intro(ENABLE_P2D, status, timer):
         fill(255,float(timer-150)/30*255) #Opacity is the 2nd parameter, takes the frames between 150 and 180 and uses that
     else:
         if(mousePressed):
+            timer = 0
             status = "instruction"
         fill(180,float(timer-150)/30*255) #Opacity is the 2nd parameter, takes the frames between 150 and 180 and uses that
     stroke(0,float(timer-150)/30*255)
     rect(displayWidth/2,displayHeight/2+yOffset4+ 0.36*displayHeight, displayWidth/6, displayHeight/10, 28);
     fill(0,float(timer-150)/30*255)
-    textSize(40)
-    text("Instruction",displayWidth/2,displayHeight/1.93+yOffset4 + 0.35*displayHeight)
+    textSize(30)
+    text("Instructions",displayWidth/2,displayHeight/1.93+yOffset4 + 0.35*displayHeight)
     pop()
     
     #Quit button

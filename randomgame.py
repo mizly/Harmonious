@@ -126,8 +126,8 @@ def randomgame(ENABLE_P2D,status,timer,locked, locked2,yInt, slope, quadratic,yI
             if not mousePressed:
                 locked = False
                 if isMouseOverRect(displayWidth/12*11,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over next button
-                    status = "random"
                     yInt, slope,quadratic = 0,0,0
+                    status = "random"
     
     #Invert effect
     push()
@@ -159,6 +159,7 @@ def randomgame(ENABLE_P2D,status,timer,locked, locked2,yInt, slope, quadratic,yI
         if not mousePressed:
             locked2 = False
             if isMouseOverRect(displayWidth/12,displayHeight/15,displayWidth/16,displayHeight/25): #check if mouse is over back button
+                yInt, slope,quadratic = 0,0,0
                 status = "random"
     
     return (status,timer,locked,locked2,yInt,slope,quadratic,yIntLocked,slopeLocked,quadraticLocked, level)
